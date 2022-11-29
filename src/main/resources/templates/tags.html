@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragment/header :: header(|#${tag}|)"></div>
+<body>
+<!-- NavBar 부분 -->
+<div th:replace="fragment/navbar :: navbar"></div>
+<div th:replace="fragment/navbar :: login_modal"></div>
+
+<div class="container-md px-lg-5 px-xl-0" style="min-height: 58.5rem">
+    <div class="row align-items-center mb-2">
+        <div class="col-auto">
+            <p class="text-decoration-none text-dark fw-semibold fs-4" th:text="|# ${tag}|">
+                #tag
+            </p>
+        </div>
+    </div>
+
+    <!-- 인기 탭 카드뷰 -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3">
+        <div th:each="post : ${postList}" class="col">
+            <div
+                    class="card border-light shadow-sm"
+                    style="--bs-card-height: 25rem"
+            >
+                <a th:href="@{|/post/${post.id}|}"><img th:if="${post.thumbnail} != null" th:src="${post.thumbnail}" class="card-img-top" width="100%" height="165rem"></a>
+                <a th:href="@{|/post/${post.id}|}" class="card-body text-decoration-none text-dark">
+                    <h5 th:text="${post.title}"
+                        class="card-title text-truncate fw-bold"
+                        style="font-size: 1.2rem"
+                    >
+                        post title
+                    </h5>
+                    <p th:text="${post.description}"
+                       class="card-text text-wrap text-truncate"
+                       style="
+                  font-size: 0.9rem;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 3;
+                  -webkit-box-orient: vertical;
+                "
+                    >
+                        post contents
+                    </p>
+                </a>
+                <div class="card-footer d-flex bg-transparent">
+                    <a th:href="@{|/@${post.author}|}" th:text="${post.author}" class="text-muted fw-bold text-decoration-none text-dark me-auto" style="font-size: 0.85rem"
+                    >author name</a
+                    >
+                    <img src="/image/hand-thumbs-up.svg">
+                    <span class="text-muted fw-bold text-decoration-none text-dark ms-2" style="font-size: 0.85rem" th:text="${post.liked}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <nav aria-label="Page navigation example">
+        <ul
+                class="pagination justify-content-center"
+                style="
+              --bs-pagination-color: #000000;
+              --bs-pagination-active-bg: #198754;
+              --bs-pagination-active-border-color: #198754;
+              --bs-pagination-hover-color: #{$pagination-hover-color};
+              --bs-pagination-focus-color: none;
+              --bs-pagination-focus-bg: none;
+              --bs-pagination-focus-box-shadow: none;
+            "
+        >
+            <li class="page-item">
+                <a class="page-link" th:href="@{|/tags/${tag}?page=1|}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li th:each="page : ${pageList}" class="page-item" th:classappend="(${currentPage} == ${page})? 'active':''">
+                <a class="page-link" th:href="@{|/tags/${tag}?page=${page}|}" th:text="${page}"></a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" th:href="@{|/tags/${tag}?page=${postList.getTotalPages()}|}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:replace="fragment/footer :: footer"></div>
+<div th:replace="fragment/footer :: bootstrap"></div>
+</body>
+</html>

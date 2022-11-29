@@ -1,0 +1,154 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:replace="fragment/header :: header('설정')"></div>
+<body>
+    <!-- NavBar 부분 -->
+    <div th:replace="fragment/navbar :: navbar"></div>
+    <div th:replace="fragment/navbar :: login_modal"></div>
+
+    <div class="container-md px-lg-5 px-xl-0" style="max-width: 50rem">
+        <div class="row justify-content-center align-content-center">
+            <div class="col-auto">
+                <img
+                        th:src="${session.member.picture}?: |/image/default_profile.svg|"
+                        alt="profile"
+                        class="rounded-circle"
+                        width="200rem"
+                        height="200rem"
+                />
+            </div>
+        </div>
+        <div class="row justify-content-center align-content-center mt-5">
+            <div class="col-auto">
+                <label for="imageUpload" class="btn btn-success">이미지 업로드</label>
+                <input type="file" id="imageUpload" class="d-none">
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-secondary">이미지 삭제</button>
+            </div>
+        </div>
+        <hr class="mt-5 mb-4" />
+        <div class="row border border-1 mx-0 mb-4 rounded-3 bg-light shadow-sm">
+            <div class="col-auto p-3">
+                <label class="form-label fw-bold fs-5">가입일</label>
+                <span class="d-block fw-bold" th:text="${#temporals.format(session.member.regDate, 'yyyy년 MM월 dd일')}">2022년 8월 1일</span>
+            </div>
+        </div>
+        <div class="row border border-1 mx-0 mb-4 rounded-3 bg-light shadow-sm">
+            <div class="col-auto p-3">
+                <label class="form-label fw-bold fs-5">이메일</label>
+                <span class="d-block fw-bold" th:text="${session.member.email}">stoph.dev@gmail.com</span>
+            </div>
+        </div>
+        <div
+                class="row border border-1 mx-0 mb-4 rounded-3 bg-light align-items-end shadow-sm"
+        >
+            <div class="col p-3">
+                <label class="form-label fw-bold fs-5">이름</label>
+                <div class="callout" role="alert">
+                    작성자 이름 및 활동명으로 사용됩니다
+                </div>
+                <div class="row">
+                    <div class="col-9 col-sm-10 me-auto">
+                        <input
+                                type="text"
+                                class="form-control fw-bold"
+                                id="username"
+                                placeholder="이름을 입력해주세요"
+                                th:value="${session.member.name}"
+                        />
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <button class="btn btn-success" id="updateName" onclick="updateName()">입력</button>
+                        <!-- 토스트창 시작 -->
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div
+                                    id="nameToast"
+                                    class="toast"
+                                    role="alert"
+                                    aria-live="assertive"
+                                    aria-atomic="true"
+                            >
+                                <div class="toast-header">
+<!--                                    <img src="..." class="rounded me-2" alt="..." />-->
+                                    <strong class="me-auto">Boolog</strong>
+<!--                                    <small>11 mins ago</small>-->
+                                    <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="toast"
+                                            aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="toast-body">
+                                    이름 변경 완료!
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 토스트창 끝 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div
+                class="row border border-1 mx-0 mb-5 rounded-3 bg-light align-items-end shadow-sm"
+        >
+            <div class="col p-3">
+                <label class="form-label fw-bold fs-5">소개글</label>
+                <div class="callout" role="alert">
+                    짧게 한 줄로 자신을 표현해보세요
+                </div>
+                <div class="row">
+                    <div class="col-9 col-sm-10 me-auto">
+                        <input
+                                type="text"
+                                class="form-control fw-bold"
+                                id="introduction"
+                                placeholder="소개글을 입력해주세요"
+                                th:value="${session.member.introduction}"
+                        />
+                    </div>
+                    <div class="col-auto ms-auto">
+                        <button class="btn btn-success" id="updateIntro" onclick="updateIntro()">입력</button>
+                        <!-- 토스트창 시작 -->
+                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div
+                                    id="introToast"
+                                    class="toast"
+                                    role="alert"
+                                    aria-live="assertive"
+                                    aria-atomic="true"
+                            >
+                                <div class="toast-header">
+                                    <!--                                    <img src="..." class="rounded me-2" alt="..." />-->
+                                    <strong class="me-auto">Boolog</strong>
+<!--                                    <small>11 mins ago</small>-->
+                                    <button
+                                            type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="toast"
+                                            aria-label="Close"
+                                    ></button>
+                                </div>
+                                <div class="toast-body">
+                                    소개글 변경 완료!
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 토스트창 끝 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 mx-0">
+            <div class="col-auto ms-auto">
+                <button class="btn btn-danger" onclick="withdrawal()">회원 탈퇴</button>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragment/footer :: footer"></div>
+    <div th:replace="fragment/footer :: bootstrap"></div>
+    <script src="/js/setting.js"></script>
+</body>
+</html>

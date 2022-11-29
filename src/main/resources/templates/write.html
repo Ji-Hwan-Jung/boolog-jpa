@@ -1,0 +1,164 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link
+            href="/css/bootstrap.css"
+            rel="stylesheet"
+    />
+    <link
+            href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"
+            rel="stylesheet"
+    />
+    <link
+            href="/css/toastui_editor.css"
+            rel="stylesheet"
+    />
+
+    <style>
+        .custom-tooltip {
+        --bs-tooltip-bg: var(--bs-success);
+        --bs-tooltip-opacity: 1;
+        --bs-tooltip-max-width: 20rem;
+        left: 30px;
+      }
+
+    </style>
+    <title>새 글 작성</title>
+</head>
+<body>
+<!-- NavBar 부분 -->
+<div th:replace="fragment/navbar :: navbar"></div>
+<div th:replace="fragment/navbar :: login_modal"></div>
+
+<div class="container-md px-lg-5 px-xl-0">
+    <input
+            type="text"
+            class="form-control form-control-lg mb-3 border-0 border-bottom rounded-0 fs-1 fw-bold"
+            id="title"
+            placeholder="제목을 입력해주세요"
+    />
+    <input
+            type="text"
+            class="form-control mb-3"
+            id="tags"
+            placeholder="태그를 입력해주세요"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            data-bs-custom-class="custom-tooltip"
+            data-bs-trigger="focus"
+            data-bs-title="쉼표를 사용하여 태그를 구분해주세요."
+    />
+    <div class="mb-4" id="editor"></div>
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postSubmit" onclick="publish('write')">
+                제출하기
+            </button>
+            <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="history.go(-1)"
+            >
+                나가기
+            </button>
+        </div>
+    </div>
+    <div
+            class="modal fade"
+            id="postSubmit"
+            tabindex="-1"
+            style="--bs-modal-width: 50rem"
+    >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content px-4 py-5">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <img
+                                        src="http://chiye1890.dothome.co.kr/img/no_thumbnail.png"
+                                        class="mb-3"
+                                        style="width: 100%; height: 13rem; max-height: 13rem"
+                                        id="thumbnail"
+                                />
+                                <div class="d-sm-flex d-block">
+                                    <label
+                                            for="thumbnailUpload"
+                                            class="btn btn-success btn-sm me-auto"
+                                    >썸네일 업로드</label
+                                    >
+                                    <input
+                                            type="file"
+                                            id="thumbnailUpload"
+                                            accept="image/png, image/jpeg"
+                                            class="opacity-0"
+                                            style="width: 0rem; height: 0rem"
+                                    />
+                                    <button
+                                            class="btn btn-danger btn-sm ms-auto"
+                                            onclick="deleteThumbnail()"
+                                    >
+                                        썸네일 삭제
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col d-flex flex-column">
+                <textarea
+                        id="description"
+                        class="form-control mb-auto"
+                        placeholder="작성한 글에 대해 짧은 설명을 달아주세요."
+                        maxlength="150"
+                        style="
+                    resize: none;
+                    max-height: 11rem;
+                    height: 100%;
+                    font-size: 0.83rem;
+                  "
+                ></textarea>
+                            <div class="d-flex">
+                                <button
+                                        type="button"
+                                        class="btn btn-secondary btn-sm ms-auto"
+                                        id="closeModal"
+                                        data-bs-dismiss="modal"
+                                >
+                                    취소
+                                </button>
+                                <button
+                                        class="btn btn-success btn-sm ms-2"
+                                        onclick="savePost()"
+                                >
+                                    제출하기
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragment/footer :: footer"></div>
+<div th:replace="fragment/footer :: bootstrap"></div>
+<div th:replace="fragment/footer :: toastui-editor"></div>
+<script th:inline="javascript">
+    const editor = new toastui.Editor({
+        el: document.querySelector("#editor"),
+        previewStyle: "vertical",
+        height: "39.5rem",
+        initialEditType: "markdown"
+    });
+
+    const tooltipTrigger = document.querySelector('#tags');
+    const tooltip = new bootstrap.Tooltip(tooltipTrigger);
+
+    let memberId = [[${memberId}]];
+</script>
+<script src="/js/post.js"></script>
+</body>
+</html>

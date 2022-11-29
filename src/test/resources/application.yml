@@ -1,0 +1,33 @@
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  profiles:
+    active: test
+
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+
+  session:
+    store-type: JDBC
+
+  sql:
+    init:
+      platform: local
+      mode: EMBEDDED
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: test
+            clientSecret: test
+            scope:
+              - profile
+              - email
+
+

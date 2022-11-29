@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header (title)">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link
+            href="/css/bootstrap.css"
+            rel="stylesheet"
+    />
+    <style>
+      .callout {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        color: #755e16;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background-color: #fff7e3;
+        border-left: 0.25rem solid #ffd65c;
+      }
+    </style>
+    <title th:text="${title}">Document</title>
+</head>
+</html>

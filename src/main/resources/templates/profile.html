@@ -1,0 +1,159 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <div th:replace="~{fragment/header :: header (${member.name})}"></div>
+  <body>
+  <!-- NavBar 부분 -->
+  <div th:replace="fragment/navbar :: navbar"></div>
+  <div th:replace="fragment/navbar :: login_modal"></div>
+
+  <!-- 프로필 부분 -->
+  <div class="container-md px-lg-5 px-xl-0" style="max-width: 80rem">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="text-center">
+          <a href="#">
+            <img
+                    th:src="${member.picture}?: |/image/default_profile.svg|"
+                    alt="profile"
+                    class="rounded-circle mb-4"
+                    width="100rem"
+                    height="100rem"
+            /></a>
+        </div>
+        <div th:text="${member.name}" class="fw-bold fs-2 text-center mb-3">stoph</div>
+        <div
+                th:text="${member.introduction}"
+                class="mx-auto fw-bold mb-5 text-center"
+                style="max-width: 35rem"
+        >
+          반갑습니다 주니어 개발자 stoph 입니다
+        </div>
+<!--        <div class="text-center">-->
+<!--          <button class="btn btn-success rounded-pill">구독하기</button>-->
+<!--        </div>-->
+        <hr />
+      </div>
+    </div>
+  </div>
+
+  <!-- 태그 및 게시글 부분 -->
+  <div class="container-md px-lg-5 px-xl-0" style="max-width: 80rem">
+    <div th:if="${postList.getTotalPages() > 0}" class="row justify-content-center mt-5">
+      <div class="col-2">
+        <div class="mb-4 ms-2">태그 목록</div>
+
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a th:href="@{|/@${member.name}|}"
+               class="text-decoration-none"
+               th:classappend="(${tagParam} == '')? 'fw-bold text-success':'text-dark'">
+              전체 보기
+            </a>
+            <span class="badge bg-secondary rounded-pill" th:text="${totalNum}">1</span>
+          </li>
+          <li
+                  th:each="tag : ${tagsAndCount}"
+                  class="list-group-item d-flex justify-content-between align-items-center"
+          >
+            <a
+                    th:href="@{|/@${member.name}?tag=${tag.tagName}|}"
+                    class="text-decoration-none"
+                    th:classappend="(${tagParam} == ${tag.tagName})? 'fw-bold text-success':'text-dark'"
+                    th:text="${tag.tagName}">CS</a>
+            <span class="badge bg-secondary rounded-pill" th:text="${tag.count}">1</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-8 px-5 mx-auto">
+        <div th:each="post : ${postList}">
+        <div
+                class="card"
+                style="
+              --bs-card-height: auto;
+              --bs-card-border-radius: 0rem;
+              --bs-card-border-width: 0rem;
+              max-height: 35rem;
+            "
+        >
+          <a th:href="@{|/post/${post.id}|}"
+          ><img
+                  th:if="${post.thumbnail} != null" th:src="${post.thumbnail}"
+                  class="card-img-top rounded-0"
+                  style="height: auto; max-height: 25rem"
+          /></a>
+          <a th:href="@{|/post/${post.id}|}" class="card-body px-0 text-decoration-none text-dark">
+              <p
+                      th:text="${post.title}"
+                      class="card-title text-truncate fw-bold"
+                      style="font-size: 1.3rem"
+              >
+                Bootstrap에 대해서 알아봅시다
+              </p>
+            <p
+                    th:text="${post.description}"
+                    class="card-text text-wrap text-truncate mt-2"
+                    style="
+                  font-size: 0.95rem;
+                  -webkit-line-clamp: 2;
+                  display: -webkit-box;
+                  -webkit-box-orient: vertical;
+                "
+            >
+                고동을 우리 온갖 이것이다. 간에 부패를 인간의 사랑의
+                것이다.보라, 불어 열매를 착목한는 그들의 뿐이다. 황금시대를
+                그림자는 이상, 별과 피다. 사라지지 아니한 방지하는 인생에 바로
+                무엇이 운다. 피어나는 불어 것은 웅대한 것이다.
+              </p>
+          </a>
+          <div class="card-footer px-0 border border-0 bg-transparent">
+            <div class="d-block">
+              <a th:href="@{|/tags/${tag}|}" th:each="tag : ${#strings.listSplit(post.tags, '#')}" class="btn btn-secondary mt-2 me-1 rounded-pill" th:text="${tag}">asdasdasd</a>
+            </div>
+            <div class="d-block mt-2">
+              <small th:text="${#temporals.format(post.createdDate, 'yyyy년 MM월 dd일')}" class="text-muted fw-bold" style="font-size: 0.8rem"
+              >2022년 8월 1일</small
+              >
+            </div>
+          </div>
+        </div>
+        <hr class="my-5" />
+        </div>
+      </div>
+    </div>
+    <div th:if="${postList.getTotalPages() > 0}" class="row mt-5">
+      <nav aria-label="Page navigation">
+        <ul
+                class="pagination justify-content-center"
+                style="
+              --bs-pagination-color: #000000;
+              --bs-pagination-active-bg: #198754;
+              --bs-pagination-active-border-color: #198754;
+              --bs-pagination-hover-color: #{$pagination-hover-color};
+              --bs-pagination-focus-color: none;
+              --bs-pagination-focus-bg: none;
+              --bs-pagination-focus-box-shadow: none;
+            "
+        >
+          <li class="page-item">
+            <a class="page-link" th:href="@{|/@${member.name}?page=1|}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li th:each="page : ${pageList}" class="page-item" th:classappend="(${currentPage} == ${page})? 'active':''">
+            <a class="page-link" th:href="@{|/@${member.name}?page=${page}|}" th:text="${page}"></a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{|/@${member.name}?page=${postList.getTotalPages()}|}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div th:replace="fragment/footer :: footer"></div>
+  <div th:replace="fragment/footer :: bootstrap"></div>
+  </body>
+</html>
