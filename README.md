@@ -10,7 +10,8 @@
 ## 기존 프로젝트에서의 변동 사항
 - Entity를 중심으로 DB 테이블 구조 재설계
 - MyBatis 기반에서 JPA 기반으로 전환
-- 계층적 패키지 구조에서 도메인 패키지 구조로 변경
+
+<br>
 
 ## 주요 기능
 - 로그인/회원가입 : 구글, 네이버 OAuth API 사용
@@ -24,7 +25,8 @@
 - 댓글 기능 : [라이브리](https://www.livere.com/) 서비스 사용
 - 좋아요 기능 : 좋아요한 게시글을 따로 모아서 검색 가능
 - 태그 기능 : 태그별로 게시글을 따로 모아서 검색 가능
-  <br>
+  
+<br>
 
 ## 기술 스택
 - Frontend : HTML/CSS, Javascript, Bootstrap, Thymeleaf
@@ -32,19 +34,27 @@
 - DevOps : Gradle, MySQL, Redis, Google Compute Engine
 - Tools : IntelliJ IDEA, VScode
 
+<br>
+
 ## 기획 및 설계
 - [기능 명세서](https://spiral-shad-619.notion.site/641b6f9b214f4c89ad7f0d53ff5470a4)
 - [API 설계](https://spiral-shad-619.notion.site/API-4f26a39fce3349d7919e84e773bef83a)
 - [DB 스키마](https://www.erdcloud.com/d/g7m9tyvTkhDAhJcwt)
 
+<br>
+
 ## 사용한 외부 라이브러리
 - 글 작성 에디터 - [toast ui editor](https://ui.toast.com/tui-editor)
+
+<br>
 
 ## 데모 - [Boolog](http://www.boolog.kro.kr)
 - 무료 서비스를 주로 사용하고 있어서 성능이 좋지 않아 전체적으로 로드 속도가 다소 느립니다.
   - 배포환경 - [Google Compute Engine](https://cloud.google.com/compute?hl=ko)
   - 세션 관리 - [redis.com](https://redis.com/)
   - 데이터베이스 - [db4free.net](https://www.db4free.net/)
+
+<br>
 
 ## 앞으로 추가 및 수정할 기능
 - **일반 로그인 및 회원가입**
@@ -58,7 +68,8 @@
   - 구독한 회원별로 게시글 모아볼 수 있는 조회 API 추가<br>
 - **알림 기능**
   - 구독한 회원의 새로운 글 등록, 나의 게시글에 달린 댓글 등등의 소식을 알려주는 기능
-    <br>
+
+<br>
 
 ## 학습한 강의 및 도서
 - [우아한형제들 최연소 기술이사 김영한의 스프링 완전 정복](https://www.inflearn.com/roadmaps/373)
