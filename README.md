@@ -37,8 +37,8 @@
 <br>
 
 ## 기획 및 설계
-- [기능 명세서](https://spiral-shad-619.notion.site/641b6f9b214f4c89ad7f0d53ff5470a4)
-- [API 설계](https://spiral-shad-619.notion.site/API-4f26a39fce3349d7919e84e773bef83a)
+- [기능 명세서](https://stophase.notion.site/641b6f9b214f4c89ad7f0d53ff5470a4)
+- [API 설계](https://stophase.notion.site/API-4f26a39fce3349d7919e84e773bef83a)
 - [DB 스키마](https://www.erdcloud.com/d/g7m9tyvTkhDAhJcwt)
 
 <br>
