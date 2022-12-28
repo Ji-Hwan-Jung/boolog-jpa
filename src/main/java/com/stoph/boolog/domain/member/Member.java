@@ -91,6 +91,7 @@ public class Member {
 
         if (!this.likedPosts.contains(likedPost)) {
             this.likedPosts.add(likedPost);
+            post.likedAddition();
         }
     }
 
@@ -102,6 +103,7 @@ public class Member {
         if (!result.isEmpty()) {
             LikedPost likedPost = result.get(0);
             this.likedPosts.remove(likedPost);
+            post.likedSubtraction();
         }
     }
 

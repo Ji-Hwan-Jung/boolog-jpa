@@ -76,6 +76,16 @@ public class Post {
         this.tags.clear();
     }
 
+    // 좋아요 수 증가 DB트리거 로직으로 구현
+    public void likedAddition(){
+        this.liked += 1;
+    }
+
+    // 좋아요 수 감소 DB트리거 로직으로 구현
+    public void likedSubtraction(){
+        this.liked -= 1;
+    }
+
     public void addTag(List<Tag> tags) {
         if (!tags.isEmpty()) {
             for (Tag tag : tags) {
