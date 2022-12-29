@@ -34,6 +34,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.session:spring-session-data-redis'
 
+	//XSS 라이브러리
+	implementation 'org.owasp.antisamy:antisamy:1.7.2'
 
 	//MySQL Driver
 	implementation 'mysql:mysql-connector-java:8.0.30'
