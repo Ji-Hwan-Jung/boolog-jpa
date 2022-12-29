@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+import static com.stoph.boolog.web.utils.PostUtils.*;
+
 @EqualsAndHashCode
 @ToString
 @Getter
@@ -28,11 +30,11 @@ public class PostResponseDto {
         this.id = id;
         this.author = author;
         this.thumbnail = thumbnail;
-        this.description = description;
-        this.title = title;
-        this.content = content;
+        this.description = XssValidation(description.trim());
+        this.title = XssValidation(title.trim());
+        this.content = XssValidation(content.trim());
         this.liked = liked;
-        this.tags = tags;
+        this.tags = XssValidation(tags.trim());
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
     }

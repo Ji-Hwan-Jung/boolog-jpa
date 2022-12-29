@@ -2,7 +2,6 @@ package com.stoph.boolog.web.dto;
 
 import com.stoph.boolog.domain.member.Member;
 import com.stoph.boolog.domain.post.Post;
-import com.stoph.boolog.web.utils.PostUtils;
 import com.stoph.boolog.domain.post.Tag;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.stoph.boolog.web.utils.PostUtils.*;
 
 @Getter
 public class PostRequestDto {
@@ -32,10 +33,10 @@ public class PostRequestDto {
     @Builder
     public PostRequestDto(String thumbnail, String description, String title, String content, String tags) {
         this.thumbnail = thumbnail;
-        this.description = description.trim();
-        this.title = title.trim();
-        this.content = content.trim();
-        this.tags = !tags.isBlank() ? PostUtils.tagParsing(tags) : "";
+        this.description = XssValidation(description.trim());
+        this.title = XssValidation(title.trim());
+        this.content = XssValidation(content.trim());
+        this.tags = !tags.isBlank() ? tagParsing(XssValidation(tags.trim())) : "";
     }
 
     public Post toPost(Member member) {

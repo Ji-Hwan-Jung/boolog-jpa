@@ -2,6 +2,7 @@ package com.stoph.boolog.web.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.owasp.validator.html.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,5 +36,16 @@ public class PostUtils {
         }
 
         return pageList;
+    }
+
+    public static String XssValidation(String s){
+        try{
+            AntiSamy as = new AntiSamy();
+            CleanResults scan = as.scan(s, Policy.getInstance());
+            return scan.getCleanHTML();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
 }

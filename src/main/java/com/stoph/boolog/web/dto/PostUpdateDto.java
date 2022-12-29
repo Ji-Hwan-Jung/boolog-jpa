@@ -1,6 +1,5 @@
 package com.stoph.boolog.web.dto;
 
-import com.stoph.boolog.web.utils.PostUtils;
 import com.stoph.boolog.domain.post.Tag;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.stoph.boolog.web.utils.PostUtils.*;
 
 @Getter
 @ToString
@@ -27,10 +28,10 @@ public class PostUpdateDto {
 
     @Builder
     public PostUpdateDto(String description, String title, String content, String tags) {
-        this.description = description;
-        this.title = title;
-        this.content = content;
-        this.tags = !tags.isBlank() ? PostUtils.tagParsing(tags) : "";
+        this.description = XssValidation(description.trim());
+        this.title = XssValidation(title.trim());
+        this.content = XssValidation(content.trim());
+        this.tags = !tags.isBlank() ? tagParsing(XssValidation(tags.trim())) : "";
     }
 
     public List<Tag> getTagList() {
