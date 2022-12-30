@@ -13,8 +13,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -81,28 +83,25 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     @Override
     public Page<Post> findAllByPeriodOrderByLikedDesc(Period period, Pageable pageable) {
-
-        List<Post> result = new ArrayList<>();
+        List<Post> result = em.createQuery("select p from Post p order by p.liked desc, p.createdDate desc", Post.class)
+                .getResultList();
 
         if (period.equals(Period.daily)) {
-            result = em.createQuery("select p from Post p " +
-                            "where function('datediff', hour, p.createdDate, current_timestamp) between 0 and 23", Post.class)
-                    .getResultList();
+            result = result.stream()
+                    .filter(p -> p.getCreatedDate().isAfter(LocalDateTime.now().minusDays(1L)))
+                    .collect(Collectors.toList());
         } else if (period.equals(Period.weekly)) {
-            result = em.createQuery("select p from Post p " +
-                            "where function('datediff', day, p.createdDate, current_timestamp) between 0 and 6", Post.class)
-                    .getResultList();
+            result = result.stream()
+                    .filter(p -> p.getCreatedDate().isAfter(LocalDateTime.now().minusWeeks(1L)))
+                    .collect(Collectors.toList());
         } else if (period.equals(Period.monthly)) {
-            result = em.createQuery("select p from Post p " +
-                            "where function('datediff', month, p.createdDate, current_timestamp) between 0 and 1", Post.class)
-                    .getResultList();
+            result = result.stream()
+                    .filter(p -> p.getCreatedDate().isAfter(LocalDateTime.now().minusMonths(1L)))
+                    .collect(Collectors.toList());
         } else if (period.equals(Period.yearly)) {
-            result = em.createQuery("select p from Post p " +
-                            "where function('datediff', year, p.createdDate, current_timestamp) between 0 and 1", Post.class)
-                    .getResultList();
-        } else {
-            result = em.createQuery("select p from Post p order by p.liked desc, p.createdDate desc", Post.class)
-                    .getResultList();
+            result = result.stream()
+                    .filter(p -> p.getCreatedDate().isAfter(LocalDateTime.now().minusYears(1L)))
+                    .collect(Collectors.toList());
         }
 
         int start = (int)pageable.getOffset();
