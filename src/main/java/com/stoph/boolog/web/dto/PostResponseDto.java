@@ -30,7 +30,7 @@ public class PostResponseDto {
         this.id = id;
         this.author = author;
         this.thumbnail = thumbnail;
-        this.description = !description.isBlank() ? XssValidation(description.trim()) : null;
+        this.description = description != null ? XssValidation(description.trim()) : null;
         this.title = XssValidation(title.trim());
         this.content = XssValidation(content.trim());
         this.liked = liked;

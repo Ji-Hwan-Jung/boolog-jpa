@@ -28,7 +28,7 @@ public class PostUpdateDto {
 
     @Builder
     public PostUpdateDto(String description, String title, String content, String tags) {
-        this.description = !description.isBlank() ? XssValidation(description.trim()) : null;
+        this.description = description != null ? XssValidation(description.trim()) : null;
         this.title = XssValidation(title.trim());
         this.content = XssValidation(content.trim());
         this.tags = !tags.isBlank() ? tagParsing(XssValidation(tags.trim())) : "";
