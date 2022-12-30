@@ -33,7 +33,7 @@ public class PostRequestDto {
     @Builder
     public PostRequestDto(String thumbnail, String description, String title, String content, String tags) {
         this.thumbnail = thumbnail;
-        this.description = XssValidation(description.trim());
+        this.description = !description.isBlank() ? XssValidation(description.trim()) : null;
         this.title = XssValidation(title.trim());
         this.content = XssValidation(content.trim());
         this.tags = !tags.isBlank() ? tagParsing(XssValidation(tags.trim())) : "";
