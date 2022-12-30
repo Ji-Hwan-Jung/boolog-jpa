@@ -24,6 +24,11 @@ spring:
     username: ${REDIS_USERNAME}
     password: ${REDIS_PWD}
 
+# logging
+logging:
+  level:
+    org.owasp.validator: off
+
 # security 설정
   security:
     oauth2:

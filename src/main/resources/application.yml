@@ -9,3 +9,7 @@ spring:
     group:
       local: dev, oauth
       remote: prod, oauth
+
+logging:
+  level:
+    org.owasp.validator: off
