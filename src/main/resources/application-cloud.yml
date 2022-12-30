@@ -3,7 +3,11 @@ spring:
     ansi:
       enabled: always
 
-# JPA 설정
+  config:
+    activate:
+      on-profile: cloud
+
+  # JPA 설정
   jpa:
     hibernate:
       ddl-auto: none
