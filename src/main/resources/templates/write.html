@@ -16,16 +16,7 @@
             href="/css/toastui_editor.css"
             rel="stylesheet"
     />
-
-    <style>
-        .custom-tooltip {
-        --bs-tooltip-bg: var(--bs-success);
-        --bs-tooltip-opacity: 1;
-        --bs-tooltip-max-width: 20rem;
-        left: 30px;
-      }
-
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
     <title>새 글 작성</title>
 </head>
 <body>
@@ -41,15 +32,10 @@
             placeholder="제목을 입력해주세요"
     />
     <input
-            type="text"
+            type="hidden"
             class="form-control mb-3"
             id="tags"
             placeholder="태그를 입력해주세요"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            data-bs-custom-class="custom-tooltip"
-            data-bs-trigger="focus"
-            data-bs-title="쉼표를 사용하여 태그를 구분해주세요."
     />
     <div class="mb-4" id="editor"></div>
     <div class="row justify-content-end">
@@ -155,11 +141,6 @@
         height: "39.5rem",
         initialEditType: "markdown"
     });
-
-    const tooltipTrigger = document.querySelector('#tags');
-    const tooltip = new bootstrap.Tooltip(tooltipTrigger);
-
-    const memberId = [[${memberId}]];
 </script>
 <script src="/js/post.js"></script>
 </body>

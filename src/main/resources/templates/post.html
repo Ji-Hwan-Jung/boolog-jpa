@@ -44,7 +44,7 @@
         </div>
         <div class="col-auto ms-auto">
           <a th:if="${hasAuthority}" class="text-dark fw-bold" th:href="@{|/post/${post.id}/edit|}">수정</a>
-          <a th:if="${hasAuthority}" class="text-dark fw-bold ms-2" href="#" onclick="deletePost()">삭제</a>
+          <a th:if="${hasAuthority}" class="text-dark fw-bold ms-2" href="#" th:onclick="|deletePost(${post.id})|">삭제</a>
         </div>
       </div>
       <div th:if="${tags.size() > 0}" class="row mt-3">
@@ -97,7 +97,7 @@
                     class="btn rounded-pill fw-bold"
                     th:classappend="${isLiked} ? 'btn-success' : 'btn-outline-success'"
                     id="likedStatus"
-                    th:onclick="|thumbUpProc(${isLiked})|">좋아요
+                    th:onclick="|thumbUpProc(${post.id}, ${isLiked})|">좋아요
               <span class="badge text-bg-secondary ms-2" id="likedCnt" th:text="${post.liked}">10</span></button>
           </div>
         </div>
@@ -177,8 +177,6 @@
     viewer: true,
     initialValue: [[${post.content}]]
   });
-
-  const id = [[${post.id}]]
   </script>
   <script src="/js/post.js"></script>
   <script>

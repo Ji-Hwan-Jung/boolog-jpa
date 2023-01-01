@@ -1,3 +1,10 @@
+const description = document.querySelector('#description');
+const title = document.querySelector('#title');
+const tags = document.querySelector('#tags');
+let content = '';
+new Tagify(tags);
+
+// 썸네일 관련
 const thumbnail = document.querySelector('#thumbnail');
 const thumbnailUpload = document.querySelector('#thumbnailUpload');
 const closeModal = document.querySelector('#closeModal');
@@ -13,12 +20,9 @@ function deleteThumbnail() {
     thumbnail.src = 'http://chiye1890.dothome.co.kr/img/no_thumbnail.png';
 }
 
+// 게시글 저장
 function savePost() {
-
-    let description = document.querySelector('#description').value;
-    let title = document.querySelector('#title').value;
-    let content = '';
-    let tags = document.querySelector('#tags').value;
+    const tags_string = (tags.value.length > 0) ? JSON.parse(tags.value).map((e) => {return e.value.toLowerCase();}).join(',') : '';
 
     if (editor.isMarkdownMode()) {
         content = editor.getMarkdown();
@@ -28,7 +32,7 @@ function savePost() {
         content = editor.getHTML();
     }
 
-    if (title.length < 1) {
+    if (title.value.length < 1) {
         alert('제목을 입력해주세요.');
         return;
     }
@@ -39,12 +43,11 @@ function savePost() {
     }
 
     const formData = new FormData();
-    formData.append('memberId', memberId);
     //formData.append('thumbnail', 'http://chiye1890.dothome.co.kr/img/Spring_Logo.svg');
-    formData.append('description', description);
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('tags', tags);
+    formData.append('description', description.value.trim());
+    formData.append('title', title.value.trim());
+    formData.append('content', content.trim());
+    formData.append('tags', tags_string);
 
     fetch("/post/write", {
         method: 'POST',
@@ -52,7 +55,6 @@ function savePost() {
         })
         .then((response) => response.text())
         .then((data) => {
-//            alert('등록 성공');
             window.location.href = '/post/' + data;
         })
         .catch((error) => {
@@ -60,12 +62,9 @@ function savePost() {
     });
 }
 
-function updatePost() {
-
-    let description = document.querySelector('#description').value;
-    let title = document.querySelector('#title').value;
-    let content = '';
-    let tags = document.querySelector('#tags').value;
+// 게시글 수정
+function updatePost(post_id) {
+    const tags_string = (tags.value.length > 0) ? JSON.parse(tags.value).map((e) => {return e.value.toLowerCase();}).join(',') : '';
 
     if (editor.isMarkdownMode()) {
         content = editor.getMarkdown();
@@ -75,7 +74,7 @@ function updatePost() {
         content = editor.getHTML();
     }
 
-    if (title.length < 1) {
+    if (title.value.length < 1) {
         alert('제목을 입력해주세요.');
         return;
     }
@@ -86,12 +85,12 @@ function updatePost() {
     }
 
     const formData = new FormData();
-    formData.append('description', description);
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('tags', tags);
+    formData.append('description', description.value.trim());
+    formData.append('title', title.value.trim());
+    formData.append('content', content.trim());
+    formData.append('tags', tags_string);
 
-    fetch("/post/" + id + "/edit", {
+    fetch("/post/" + post_id + "/edit", {
         method: 'PUT',
         body: formData
         })
@@ -104,12 +103,13 @@ function updatePost() {
     });
 }
 
-function deletePost() {
+// 게시글 삭제
+function deletePost(post_id) {
 
     const result = confirm('게시글을 삭제하시겠습니까?');
 
     if (result) {
-        fetch("/post/" + id + "/delete", {
+        fetch("/post/" + post_id + "/delete", {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -125,43 +125,24 @@ function deletePost() {
     }
 }
 
-function thumbUpProc(param) {
+// 좋아요 관련 로직
+function thumbUpProc(post_id, is_liked) {
 
     let likedCnt = document.querySelector('#likedCnt');
     let likedStatus = document.querySelector('#likedStatus');
 
-    if (param == false) {
-        fetch("/post/" + id + "/thumb-up", {
-            method: 'POST',
-        })
-        .then((response) => response.text())
-        .then((data) => {
-            if (data == 'error'){
-                alert('로그인 후 이용해주세요')
-                window.location.href = "/signin";
-            }
-            likedStatus.classList.replace('btn-outline-success', 'btn-success')
-            likedStatus.setAttribute('onclick', 'thumbUpProc(true)')
-            likedCnt.textContent = data;
-        })
-        .catch((error) => {
-            alert('로그인 후 이용해주세요')
-            window.location.href = "/signin";
-        })
-    }
-
-    if (param == true) {
-        fetch("/post/" + id + "/thumb-up-cancel",{
+    if (is_liked) {
+        fetch("/post/" + post_id + "/thumb-up-cancel",{
             method: 'DELETE',
         })
         .then((response) => response.text())
         .then((data) => {
-            if (data == 'error'){
+            if (data === 'error'){
                 alert('로그인 후 이용해주세요')
                 window.location.href = "/signin";
             }
             likedStatus.classList.replace('btn-success', 'btn-outline-success')
-            likedStatus.setAttribute('onclick', 'thumbUpProc(false)')
+            likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`)
             likedCnt.textContent = data;
         })
         .catch((error) => {
@@ -169,10 +150,29 @@ function thumbUpProc(param) {
             window.location.href = "/signin";
         })
     }
+
+    else {
+        fetch("/post/" + post_id + "/thumb-up", {
+            method: 'POST',
+        })
+            .then((response) => response.text())
+            .then((data) => {
+                if (data === 'error'){
+                    alert('로그인 후 이용해주세요')
+                    window.location.href = "/signin";
+                }
+                likedStatus.classList.replace('btn-outline-success', 'btn-success')
+                likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`)
+                likedCnt.textContent = data;
+            })
+            .catch((error) => {
+                alert('로그인 후 이용해주세요')
+                window.location.href = "/signin";
+            })
+    }
 }
 
-function publish(mode) {
-
+function publish(mode, desc='') {
     const description = document.querySelector('#description');
     const content = editor.isMarkdownMode() ? editor.getMarkdown() : editor.getHTML();
 
@@ -181,6 +181,6 @@ function publish(mode) {
     }
 
     if (mode === 'edit') {
-        description.value = postDescription;
+        description.value = desc;
     }
 }

@@ -16,16 +16,8 @@
             href="/css/toastui_editor.css"
             rel="stylesheet"
     />
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 
-    <style>
-        .custom-tooltip {
-        --bs-tooltip-bg: var(--bs-success);
-        --bs-tooltip-opacity: 1;
-        --bs-tooltip-max-width: 20rem;
-        left: 30px;
-      }
-
-    </style>
     <title>(글 수정) [[${post.title}]]</title>
 </head>
 <body>
@@ -34,7 +26,6 @@
 <div th:replace="fragment/navbar :: login_modal"></div>
 
 <div class="container-md px-lg-5 px-xl-0">
-<!--    <input type="hidden" th:value="${post.id}" id="id">-->
     <input
             type="text"
             class="form-control form-control-lg mb-3 border-0 border-bottom rounded-0 fs-1 fw-bold"
@@ -43,21 +34,16 @@
             th:value="${post.title}"
     />
     <input
-            type="text"
+            type="hidden"
             class="form-control mb-3"
             id="tags"
             placeholder="태그를 입력해주세요"
             th:value="${post.tags}"
-            data-bs-toggle="tooltip"
-            data-bs-placement="bottom"
-            data-bs-custom-class="custom-tooltip"
-            data-bs-trigger="focus"
-            data-bs-title="'#' 기호와 함께 사용하고자 하는 태그를 연속으로 적어주세요 (ex. #Boolog#boolog)"
     />
     <div class="mb-4" id="editor"></div>
     <div class="row justify-content-end">
         <div class="col-auto">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#postSubmit" onclick="publish('edit')">
+            <button type="button" class="btn btn-success" th:onclick="publish('edit', [[${post.description}]])" data-bs-toggle="modal" data-bs-target="#postSubmit">
                 제출하기
             </button>
             <button
@@ -134,7 +120,7 @@
                                 </button>
                                 <button
                                         class="btn btn-success btn-sm ms-2"
-                                        onclick="updatePost()"
+                                        th:onclick="|updatePost(${post.id})|"
                                 >
                                     제출하기
                                 </button>
@@ -160,13 +146,6 @@
         initialEditType: "markdown",
         initialValue: /*[[${post.content}]]*/ ""
     });
-
-    const tooltipTrigger = document.querySelector('#tags');
-    const tooltip = new bootstrap.Tooltip(tooltipTrigger);
-
-    const id = [[${post.id}]];
-    const postDescription = [[${post.description}]];
-
 </script>
 <script src="/js/post.js"></script>
 </body>
