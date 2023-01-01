@@ -31,12 +31,12 @@ public class PostUpdateDto {
         this.description = description != null ? XssValidation(description.trim()) : null;
         this.title = XssValidation(title.trim());
         this.content = XssValidation(content.trim());
-        this.tags = !tags.isBlank() ? tagParsing(XssValidation(tags.trim())) : "";
+        this.tags = !tags.isBlank() ? XssValidation(tags.trim()) : "";
     }
 
     public List<Tag> getTagList() {
         if (!this.tags.isBlank()) {
-            return Stream.of(this.tags.split("#"))
+            return Stream.of(this.tags.split(","))
                     .filter(s -> s.length() > 0)
                     .map(s -> Tag.builder().tagName(s.toLowerCase()).build())
                     .collect(Collectors.toList());

@@ -4,6 +4,7 @@ import com.stoph.boolog.domain.member.Member;
 import com.stoph.boolog.web.dto.PostResponseDto;
 import com.stoph.boolog.web.dto.PostUpdateDto;
 import lombok.*;
+import org.springframework.context.annotation.Profile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -55,12 +56,17 @@ public class Post {
     }
 
     @PrePersist
-    public void initDate() {
+    public void init() {
         // default가 안 먹어서 직접 퍼시스트 전에 넣는 방식으로 전환
         if (this.liked == null) {
             this.liked = 0;
         }
         this.createdDate = LocalDateTime.now();
+        this.modifiedDate = LocalDateTime.now();
+    }
+
+    public void testDate(LocalDateTime crDate) {
+        this.createdDate = crDate;
         this.modifiedDate = LocalDateTime.now();
     }
 
@@ -100,20 +106,13 @@ public class Post {
         }
     }
 
-//    public void updateTag(List<Tag> tags) {
-//        if (!tags.isEmpty()) {
-//            this.tags.clear();
-//            addTag(tags);
-//        }
-//    }
-
     public PostResponseDto toResponseDto() {
         String tags = "";
 
         if (!this.tags.isEmpty()) {
-            tags = "#".concat(this.getTags().stream()
+            tags = this.getTags().stream()
                     .map(pt -> pt.getTag().getTagName())
-                    .collect(Collectors.joining("#")));
+                    .collect(Collectors.joining(","));
         }
 
         return PostResponseDto.builder()
