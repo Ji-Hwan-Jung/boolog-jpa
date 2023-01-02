@@ -32,7 +32,7 @@ public class PostResponseDto {
         this.thumbnail = thumbnail;
         this.description = description != null ? XssValidation(description.trim()) : null;
         this.title = XssValidation(title.trim());
-        this.content = XssValidation(content.trim());
+        this.content = content.trim();  //Xss 로직 돌리니까 원글이 파괴되어서 검증 X
         this.liked = liked;
         this.tags = XssValidation(tags.trim());
         this.createdDate = createdDate;
