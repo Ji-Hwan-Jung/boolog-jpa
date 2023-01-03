@@ -4,7 +4,6 @@ import com.stoph.boolog.domain.member.Member;
 import com.stoph.boolog.web.dto.PostResponseDto;
 import com.stoph.boolog.web.dto.PostUpdateDto;
 import lombok.*;
-import org.springframework.context.annotation.Profile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -80,16 +79,6 @@ public class Post {
         this.content = updateDto.getContent();
         this.description = updateDto.getDescription();
         this.tags.clear();
-    }
-
-    // 좋아요 수 증가 DB트리거 로직으로 구현
-    public void likedAddition(){
-        this.liked += 1;
-    }
-
-    // 좋아요 수 감소 DB트리거 로직으로 구현
-    public void likedSubtraction(){
-        this.liked -= 1;
     }
 
     public void addTag(List<Tag> tags) {
