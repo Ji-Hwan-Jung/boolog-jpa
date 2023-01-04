@@ -5,13 +5,14 @@ import com.stoph.boolog.service.PostService;
 import com.stoph.boolog.web.dto.PostResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -26,8 +27,10 @@ public class IndexController {
     @GetMapping("/")
     public String main(Model model) {
 
-        Page<PostResponseDto> popularList = postService.findAllPopularByPeriod(Period.weekly, PageRequest.of(0, 4));
-        Page<PostResponseDto> recentList = postService.findAllRecent(PageRequest.of(0, 4));
+        List<PostResponseDto> popularList = postService.findAllPopularByPeriod(Period.weekly, 1)
+                .stream().limit(4L).collect(Collectors.toList());
+        List<PostResponseDto> recentList = postService.findAllRecent(1)
+                .stream().limit(4L).collect(Collectors.toList());
 
         model.addAttribute("popularList", popularList);
         model.addAttribute("recentList", recentList);

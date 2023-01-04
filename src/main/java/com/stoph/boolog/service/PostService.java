@@ -13,12 +13,14 @@ import com.stoph.boolog.web.dto.TagResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.stoph.boolog.web.utils.PostUtils.*;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -55,28 +57,33 @@ public class PostService {
                 .map(Post::toResponseDto).collect(Collectors.toList());
     }
 
-    public Page<PostResponseDto> findAllPopular(Pageable pageable) {
-        return postRepository.findAllOrderByLikedDesc(pageable)
+    public Page<PostResponseDto> findAllPopular(int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
+        return postRepository.findAllOrderByLikedDesc(pageRequest)
                 .map(Post::toResponseDto);
     }
 
-    public Page<PostResponseDto> findAllPopularByPeriod(Period period, Pageable pageable) {
-        return postRepository.findAllByPeriodOrderByLikedDesc(period, pageable)
+    public Page<PostResponseDto> findAllPopularByPeriod(Period period, int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
+        return postRepository.findAllByPeriodOrderByLikedDesc(period, pageRequest)
                 .map(Post::toResponseDto);
     }
 
-    public Page<PostResponseDto> findAllRecent(Pageable pageable) {
-        return postRepository.findAllDesc(pageable)
+    public Page<PostResponseDto> findAllRecent(int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
+        return postRepository.findAllDesc(pageRequest)
                 .map(Post::toResponseDto);
     }
 
-    public Page<PostResponseDto> findAllByKeyword(String keyword, Pageable pageable) {
-        return postRepository.findAllByKeyword(keyword.trim(), pageable)
+    public Page<PostResponseDto> findAllByKeyword(String keyword, int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
+        return postRepository.findAllByKeyword(keyword.trim(), pageRequest)
                 .map(Post::toResponseDto);
     }
 
-    public Page<PostResponseDto> findAllByTag(String tag, Pageable pageable) {
-        return postRepository.findAllByTag(tag, pageable)
+    public Page<PostResponseDto> findAllByTag(String tag, int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
+        return postRepository.findAllByTag(tag, pageRequest)
                 .map(Post::toResponseDto);
     }
 
@@ -88,15 +95,17 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Page<PostResponseDto> findAllByMemberAndTag(String name, String tag, Pageable pageable) {
+    public Page<PostResponseDto> findAllByMemberAndTag(String name, String tag, int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
         Member member = memberRepository.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        return postRepository.findAllByMemberAndTag(member.getId(), tag, pageable)
+        return postRepository.findAllByMemberAndTag(member.getId(), tag, pageRequest)
                 .map(Post::toResponseDto);
     }
 
-    public Page<PostResponseDto> findAllLiked(Long memberId, Pageable pageable) {
-        return postRepository.findAllLiked(memberId, pageable)
+    public Page<PostResponseDto> findAllLiked(Long memberId, int page) {
+        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
+        return postRepository.findAllLiked(memberId, pageRequest)
                 .map(Post::toResponseDto);
     }
 

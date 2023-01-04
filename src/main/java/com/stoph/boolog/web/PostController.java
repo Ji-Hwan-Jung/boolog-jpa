@@ -13,7 +13,6 @@ import com.stoph.boolog.web.dto.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +44,7 @@ public class PostController {
                           @RequestParam(value = "page", defaultValue = "1") int page,
                           Model model) {
 
-        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
-
-        Page<PostResponseDto> posts = postService.findAllPopularByPeriod(Period.valueOf(period), pageRequest);
+        Page<PostResponseDto> posts = postService.findAllPopularByPeriod(Period.valueOf(period), page);
 
         List<Integer> pageList = getPageIndexes(page, posts.getTotalPages());  // 선택된 페이지에 따른 사용자에게 보여질 페이지 인덱스 목록
 
@@ -66,9 +63,7 @@ public class PostController {
     public String recent(@RequestParam(value = "page", defaultValue = "1") int page,
                          Model model) {
 
-        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
-
-        Page<PostResponseDto> posts = postService.findAllRecent(pageRequest);
+        Page<PostResponseDto> posts = postService.findAllRecent(page);
 
         List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
 
@@ -114,9 +109,7 @@ public class PostController {
                          @RequestParam(value = "page", defaultValue = "1") int page,
                          Model model) {
 
-        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
-
-        Page<PostResponseDto> posts = postService.findAllByKeyword(keyword, pageRequest);
+        Page<PostResponseDto> posts = postService.findAllByKeyword(keyword, page);
 
         List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
 
@@ -130,21 +123,13 @@ public class PostController {
 
     @GetMapping("/post/write")
     public String write(Model model, @LoginMember SessionMember member) {
-
-        Long memberId = memberService.findByEmail(member.getEmail()).getId();
-
-        model.addAttribute("memberId", memberId);
-
         return "write";
     }
 
     @ResponseBody
     @PostMapping("/post/write")
     public String addPost(@ModelAttribute PostRequestDto post, @LoginMember SessionMember member) {
-
-        Long postId = postService.write(member.getEmail(), post);
-
-        return postId.toString();
+        return postService.write(member.getEmail(), post).toString();
     }
 
     @GetMapping("/post/{postId}/edit")
@@ -195,11 +180,9 @@ public class PostController {
                         @RequestParam(value = "page", defaultValue = "1") int page,
                         @LoginMember SessionMember member) {
 
-        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
-
         Long memberId = memberService.findByEmail(member.getEmail()).getId();
 
-        Page<PostResponseDto> posts = postService.findAllLiked(memberId, pageRequest);
+        Page<PostResponseDto> posts = postService.findAllLiked(memberId, page);
 
         List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
 
@@ -245,9 +228,7 @@ public class PostController {
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model) {
 
-        PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
-
-        Page<PostResponseDto> posts = postService.findAllByTag(tag, pageRequest);
+        Page<PostResponseDto> posts = postService.findAllByTag(tag, page);
 
         List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
 

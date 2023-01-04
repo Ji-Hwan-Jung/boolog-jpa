@@ -12,7 +12,6 @@ import com.stoph.boolog.web.dto.TagResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,21 +29,17 @@ public class MemberController {
     private final MemberService memberService;
     private final HttpSession httpSession;
 
-
     @GetMapping("/@{name}")
     public String profile(Model model,
                           @PathVariable("name") String name,
                           @RequestParam(value = "page", defaultValue = "1") int page,
                           @RequestParam(value = "tag", defaultValue = "") String tag) {
 
-
-        PageRequest pageRequest = PageRequest.of(page - 1, PostUtils.NUMBERS_PER_PAGE);
-
         List<PostResponseDto> total = postService.findAllByMember(name);
 
         MemberResponseDto member = memberService.findByName(name).toResponseDto();
         List<TagResponseDto> tagsAndCount = postService.findNumbersOfTag(name);
-        Page<PostResponseDto> posts = postService.findAllByMemberAndTag(name, tag, pageRequest);
+        Page<PostResponseDto> posts = postService.findAllByMemberAndTag(name, tag, page);
 
         List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
 
@@ -67,11 +62,8 @@ public class MemberController {
     @ResponseBody
     @PatchMapping("/setting/update")
     public String profileUpdate(@RequestBody MemberUpdateDto updateParam, @SessionAttribute(name = "member") SessionMember sessionMember) {
-
         Long memberId = memberService.findByEmail(sessionMember.getEmail()).getId();
-
         memberService.update(memberId, updateParam);
-
         sessionMember.updateSession(memberService.findById(memberId));
 
         return "success";
@@ -80,11 +72,8 @@ public class MemberController {
     @ResponseBody
     @DeleteMapping("/setting/withdrawal")
     public String withdrawal(@LoginMember SessionMember sessionMember) {
-
         Long memberId = memberService.findByEmail(sessionMember.getEmail()).getId();
-
         memberService.delete(memberId);
-
         httpSession.invalidate();
 
         return "ok";
