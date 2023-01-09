@@ -142,7 +142,7 @@ public class PostController {
             model.addAttribute("post", post);
             return "edit";
         } else {
-            return "";
+            return "redirect:/post/" + postId;
         }
     }
 
