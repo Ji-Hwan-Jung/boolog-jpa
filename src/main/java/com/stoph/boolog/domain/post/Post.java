@@ -56,10 +56,7 @@ public class Post {
 
     @PrePersist
     public void init() {
-        // default가 안 먹어서 직접 퍼시스트 전에 넣는 방식으로 전환
-        if (this.liked == null) {
-            this.liked = 0;
-        }
+        this.liked = this.liked == null ? 0 : this.liked;
         this.createdDate = LocalDateTime.now();
         this.modifiedDate = LocalDateTime.now();
     }
@@ -79,6 +76,7 @@ public class Post {
         this.content = updateDto.getContent();
         this.description = updateDto.getDescription();
         this.tags.clear();
+        this.modifiedDate = LocalDateTime.now();
     }
 
     public void addTag(List<Tag> tags) {
