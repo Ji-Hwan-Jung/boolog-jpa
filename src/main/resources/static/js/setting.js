@@ -5,15 +5,15 @@ function updateName() {
 
     const toast = new bootstrap.Toast(updateNameToast);
 
-    let name = document.querySelector('#username');
+    const username = document.querySelector('#username');
 
-    if (name.value.length < 1) {
+    if (username.value.length < 1) {
         alert('이름을 입력해주세요');
         return;
     }
 
     const data = {
-        name: name.value
+        name: this.username.value
     }
 
     fetch("/setting/update", {
@@ -25,7 +25,7 @@ function updateName() {
     })
     .then((response) => response.text())
     .then((data) => {
-        document.querySelector('#profile').setAttribute('href', '/@' + name.value);
+        document.querySelector('#profile').setAttribute('href', '/@' + this.username.value);
         toast.show();
     })
     .catch((error) => {
