@@ -20,6 +20,7 @@ public class MemberService {
         return findMember.getId();
     }
 
+    @Transactional
     public void update(Long id, MemberUpdateDto updateDto) {
         memberRepository.update(id, updateDto);
     }
