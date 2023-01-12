@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
+import static com.stoph.boolog.utils.AppUtils.createPassword;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -59,7 +61,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         Member member = Member.builder()
                 .email(attributes.getEmail())
-                .password(passwordEncoder.encode("boolog"))
+                .password(passwordEncoder.encode(createPassword()))
                 .name(attributes.getName())
                 .picture(attributes.getPicture())
                 .provider(attributes.getProvider())
