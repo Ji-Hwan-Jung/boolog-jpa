@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.stoph.boolog.web.utils.PostUtils.*;
+import static com.stoph.boolog.utils.WebUtils.*;
 
 @Getter
 @ToString

@@ -7,7 +7,7 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-import static com.stoph.boolog.web.utils.PostUtils.*;
+import static com.stoph.boolog.utils.WebUtils.*;
 
 @EqualsAndHashCode
 @ToString

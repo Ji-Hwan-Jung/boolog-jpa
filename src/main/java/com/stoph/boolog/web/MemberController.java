@@ -2,7 +2,7 @@ package com.stoph.boolog.web;
 
 import com.stoph.boolog.config.LoginMember;
 import com.stoph.boolog.config.dto.SessionMember;
-import com.stoph.boolog.web.utils.PostUtils;
+import com.stoph.boolog.utils.WebUtils;
 import com.stoph.boolog.service.MemberService;
 import com.stoph.boolog.service.PostService;
 import com.stoph.boolog.web.dto.MemberResponseDto;
@@ -41,7 +41,7 @@ public class MemberController {
         List<TagResponseDto> tagsAndCount = postService.findNumbersOfTag(name);
         Page<PostResponseDto> posts = postService.findAllByMemberAndTag(name, tag, page);
 
-        List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
+        List<Integer> pageList = WebUtils.getPageIndexes(page, posts.getTotalPages());
 
         model.addAttribute("totalNum", total.size());
         model.addAttribute("tagParam", tag);

@@ -4,7 +4,7 @@ import com.stoph.boolog.config.LoginMember;
 import com.stoph.boolog.config.dto.SessionMember;
 import com.stoph.boolog.domain.post.Period;
 import com.stoph.boolog.domain.post.Post;
-import com.stoph.boolog.web.utils.PostUtils;
+import com.stoph.boolog.utils.WebUtils;
 import com.stoph.boolog.service.MemberService;
 import com.stoph.boolog.service.PostService;
 import com.stoph.boolog.web.dto.PostResponseDto;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.stoph.boolog.web.utils.PostUtils.*;
+import static com.stoph.boolog.utils.WebUtils.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -65,7 +65,7 @@ public class PostController {
 
         Page<PostResponseDto> posts = postService.findAllRecent(page);
 
-        List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
+        List<Integer> pageList = WebUtils.getPageIndexes(page, posts.getTotalPages());
 
         model.addAttribute("pageList", pageList);
         model.addAttribute("currentPage", page);
@@ -111,7 +111,7 @@ public class PostController {
 
         Page<PostResponseDto> posts = postService.findAllByKeyword(keyword, page);
 
-        List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
+        List<Integer> pageList = WebUtils.getPageIndexes(page, posts.getTotalPages());
 
         model.addAttribute("pageList", pageList);
         model.addAttribute("result", posts);
@@ -132,44 +132,44 @@ public class PostController {
         return postService.write(member.getEmail(), post).toString();
     }
 
-    @GetMapping("/post/{postId}/edit")
-    public String edit(@PathVariable Long postId, Model model, @LoginMember SessionMember member) {
+    @GetMapping("/post/{id}/edit")
+    public String edit(@PathVariable Long id, Model model, @LoginMember SessionMember member) {
 
         //세션에 있는 유저의 이름과 게시글을 작성한 유저의 이름을 비교하기 위해 조회
-        PostResponseDto post = postService.findById(postId).toResponseDto();
+        PostResponseDto post = postService.findById(id).toResponseDto();
 
         if (member != null && (member.getName().equals(post.getAuthor()))) {
             model.addAttribute("post", post);
             return "edit";
         } else {
-            return "redirect:/post/" + postId;
+            return "redirect:/post/" + id;
         }
     }
 
     @ResponseBody
-    @PutMapping("/post/{postId}/edit")
+    @PutMapping("/post/{id}/edit")
     public String edit(@ModelAttribute PostUpdateDto post,
-                       @PathVariable Long postId,
+                       @PathVariable Long id,
                        @LoginMember SessionMember member) {
 
         //세션에 있는 유저의 이름과 게시글을 작성한 유저의 이름을 비교하기 위해 조회
-        String author = postService.findById(postId).toResponseDto().getAuthor();
+        String author = postService.findById(id).toResponseDto().getAuthor();
 
         if (member != null && (member.getName().equals(author))) {
-            postService.modify(postId, post);
+            postService.modify(id, post);
         }
 
-        return postId.toString();
+        return id.toString();
     }
 
     @ResponseBody
-    @DeleteMapping("/post/{postId}/delete")
-    public String delete(@PathVariable Long postId, @LoginMember SessionMember member) {
+    @DeleteMapping("/post/{id}/delete")
+    public String delete(@PathVariable Long id, @LoginMember SessionMember member) {
 
-        String author = postService.findById(postId).toResponseDto().getAuthor();
+        String author = postService.findById(id).toResponseDto().getAuthor();
 
         if (member != null && (member.getName().equals(author))) {
-            postService.delete(postId);
+            postService.delete(id);
         }
 
         return "success";
@@ -184,7 +184,7 @@ public class PostController {
 
         Page<PostResponseDto> posts = postService.findAllLiked(memberId, page);
 
-        List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
+        List<Integer> pageList = WebUtils.getPageIndexes(page, posts.getTotalPages());
 
         model.addAttribute("pageList", pageList);
         model.addAttribute("currentPage", page);
@@ -194,13 +194,13 @@ public class PostController {
     }
 
     @ResponseBody
-    @PostMapping("/post/{postId}/thumb-up")
-    public String thumbUp(@PathVariable Long postId,
+    @PostMapping("/post/{id}/thumb-up")
+    public String thumbUp(@PathVariable Long id,
                           @LoginMember SessionMember member) {
 
         if (member != null) {
-            postService.addLikedPost(member.getEmail(), postId);
-            Post findPost = postService.findById(postId);
+            postService.addLikedPost(member.getEmail(), id);
+            Post findPost = postService.findById(id);
 
             return findPost.getLiked().toString();
         } else {
@@ -209,13 +209,13 @@ public class PostController {
     }
 
     @ResponseBody
-    @DeleteMapping("/post/{postId}/thumb-up-cancel")
-    public String thumbUpCancel(@PathVariable Long postId,
+    @DeleteMapping("/post/{id}/thumb-up-cancel")
+    public String thumbUpCancel(@PathVariable Long id,
                                 @LoginMember SessionMember member) {
 
         if (member != null) {
-            postService.removeLikedPost(member.getEmail(), postId);
-            Post findPost = postService.findById(postId);
+            postService.removeLikedPost(member.getEmail(), id);
+            Post findPost = postService.findById(id);
 
             return findPost.getLiked().toString();
         } else {
@@ -230,7 +230,7 @@ public class PostController {
 
         Page<PostResponseDto> posts = postService.findAllByTag(tag, page);
 
-        List<Integer> pageList = PostUtils.getPageIndexes(page, posts.getTotalPages());
+        List<Integer> pageList = WebUtils.getPageIndexes(page, posts.getTotalPages());
 
         model.addAttribute("tag", tag);
         model.addAttribute("currentPage", page);

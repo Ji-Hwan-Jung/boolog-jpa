@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.stoph.boolog.web.utils.PostUtils.*;
+import static com.stoph.boolog.utils.WebUtils.*;
 
 @Slf4j
 @Transactional(readOnly = true)
