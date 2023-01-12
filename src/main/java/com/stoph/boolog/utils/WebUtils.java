@@ -1,4 +1,4 @@
-package com.stoph.boolog.web.utils;
+package com.stoph.boolog.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PostUtils {
+public class WebUtils {
 
     public final static int NUMBERS_PER_PAGE = 8;
     public final static int INDEXES_PER_PAGE = 5;
