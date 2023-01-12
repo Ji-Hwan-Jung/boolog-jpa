@@ -1,23 +1,25 @@
 package com.stoph.boolog.config.auth;
 
-import com.stoph.boolog.domain.member.Member;
+import com.stoph.boolog.domain.member.MemberVO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Slf4j
 @ToString
 @EqualsAndHashCode
 @Getter
 public class PrincipalDetails implements UserDetails {
 
-    private Member member;
+    private MemberVO member;
 
-    public PrincipalDetails(Member member) {
+    public PrincipalDetails(MemberVO member) {
         this.member = member;
     }
 
