@@ -53,10 +53,17 @@ function savePost() {
         method: 'POST',
         body: formData
         })
-        .then((response) => response.text())
-        .then((data) => {
-            window.location.href = '/post/' + data;
-        })
+        .then((response => {
+            response.text().then((result) => {
+                if (response.ok) {
+                    window.location.href = `/post/${result}`;
+                } else {
+                    const data = JSON.parse(result);
+//                    alert(result.message);
+                    alert('비정상적인 접근입니다.');
+                }
+            })
+        }))
         .catch((error) => {
             console.error('실패', error);
     });
@@ -94,9 +101,16 @@ function updatePost(post_id) {
         method: 'PUT',
         body: formData
         })
-        .then((response) => response.text())
-        .then((data) => {
-            window.location.href = '/post/' + data;
+        .then((response) => {
+            response.text().then((result) => {
+                if (response.ok) {
+                    window.location.href = `/post/${result}`;
+                } else {
+                    const data = JSON.parse(result);
+//                    alert(result.message);
+                    alert('비정상적인 접근입니다.');
+                }
+            })
         })
         .catch((error) => {
             console.error('실패', error);
@@ -110,14 +124,17 @@ function deletePost(post_id) {
 
     if (result) {
         fetch("/post/" + post_id + "/delete", {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            method: 'DELETE'
         })
-        .then((response) => response.text())
-        .then((data) => {
-            window.location.href = "/";
+        .then((response) => {
+            if (response.ok){
+                window.location.href = "/";
+            } else {
+                response.json().then((result) => {
+                    alert('비정상적인 접근입니다.');
+//                    alert(result.message);
+                });
+            }
         })
         .catch((error) => {
             console.error('실패', error);
@@ -128,47 +145,59 @@ function deletePost(post_id) {
 // 좋아요 관련 로직
 function thumbUpProc(post_id, is_liked) {
 
-    let likedCnt = document.querySelector('#likedCnt');
-    let likedStatus = document.querySelector('#likedStatus');
+    const likedCnt = document.querySelector('#likedCnt');
+    const likedStatus = document.querySelector('#likedStatus');
 
     if (is_liked) {
         fetch("/post/" + post_id + "/thumb-up-cancel",{
             method: 'DELETE',
-        })
-        .then((response) => response.text())
-        .then((data) => {
-            if (data === 'error'){
-                alert('로그인 후 이용해주세요')
-                window.location.href = "/signin";
+            headers: {
+                'Accept': 'application/json'
             }
-            likedStatus.classList.replace('btn-success', 'btn-outline-success')
-            likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`)
-            likedCnt.textContent = data;
+        })
+        .then((response) => {
+            response.text().then((result) => {
+                if (response.ok) {
+                    likedStatus.classList.replace('btn-success', 'btn-outline-success');
+                    likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`);
+                    likedCnt.textContent = result;
+                } else {
+//                    const data = JSON.parse(result);
+//                    alert(data.message);
+                    alert('로그인 후 이용해주세요.');
+                    window.location.href = "/signin";
+                }
+            })
         })
         .catch((error) => {
-            alert('로그인 후 이용해주세요')
-            window.location.href = "/signin";
+            alert('Client Error');
         })
     }
 
     else {
         fetch("/post/" + post_id + "/thumb-up", {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            }
         })
-            .then((response) => response.text())
-            .then((data) => {
-                if (data === 'error'){
-                    alert('로그인 후 이용해주세요')
+        .then((response) => {
+            response.text().then((result) => {
+                if (response.ok) {
+                    likedStatus.classList.replace('btn-outline-success', 'btn-success');
+                    likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`);
+                    likedCnt.textContent = result;
+                } else {
+//                    const data = JSON.parse(result);
+//                    alert(data.message);
+                    alert('로그인 후 이용해주세요.');
                     window.location.href = "/signin";
                 }
-                likedStatus.classList.replace('btn-outline-success', 'btn-success')
-                likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`)
-                likedCnt.textContent = data;
             })
-            .catch((error) => {
-                alert('로그인 후 이용해주세요')
-                window.location.href = "/signin";
-            })
+        })
+        .catch((error) => {
+            alert('Client Error');
+        })
     }
 }
 

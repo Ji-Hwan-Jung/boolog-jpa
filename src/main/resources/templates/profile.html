@@ -108,7 +108,7 @@
           </a>
           <div class="card-footer px-0 border border-0 bg-transparent">
             <div class="d-block">
-              <a th:href="@{|/tags/${tag}|}" th:each="tag : ${#strings.listSplit(post.tags, '#')}" class="btn btn-secondary mt-2 me-1 rounded-pill" th:text="${tag}">asdasdasd</a>
+              <a th:href="@{|/tags/${tag}|}" th:each="tag : ${#strings.listSplit(post.tags, ',')}" class="btn btn-secondary mt-2 me-1 rounded-pill" th:text="${tag}">asdasdasd</a>
             </div>
             <div class="d-block mt-2">
               <small th:text="${#temporals.format(post.createdDate, 'yyyy년 MM월 dd일')}" class="text-muted fw-bold" style="font-size: 0.8rem"

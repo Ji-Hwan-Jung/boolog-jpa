@@ -1,10 +1,9 @@
+const toastContainer = document.querySelector('#toast');
+const toastResult = document.querySelector('#toastResult');
+const toast = new bootstrap.Toast(toastContainer);
+
+
 function updateName() {
-
-    const updateNameBtn = document.querySelector('#updateName');
-    const updateNameToast = document.querySelector('#nameToast');
-
-    const toast = new bootstrap.Toast(updateNameToast);
-
     const username = document.querySelector('#username');
 
     if (username.value.length < 1) {
@@ -23,10 +22,13 @@ function updateName() {
         },
         body: JSON.stringify(data),
     })
-    .then((response) => response.text())
-    .then((data) => {
-        document.querySelector('#profile').setAttribute('href', '/@' + this.username.value);
-        toast.show();
+    .then((response) => {
+        response.text().then((result) => {
+            console.log(result);
+            toastResult.textContent = result;
+            document.querySelector('#profile').setAttribute('href', '/@' + this.username.value);
+            toast.show()
+        })
     })
     .catch((error) => {
         alert('오류 발생');
@@ -35,13 +37,7 @@ function updateName() {
 }
 
 function updateIntro() {
-
-    const updateIntroBtn = document.querySelector('#updateIntro');
-    const updateIntroToast = document.querySelector('#introToast');
-
-    const toast = new bootstrap.Toast(updateIntroToast);
-
-    let introduction = document.querySelector('#introduction');
+    const introduction = document.querySelector('#introduction');
 
     const data = {
         introduction: introduction.value
@@ -54,9 +50,12 @@ function updateIntro() {
         },
         body: JSON.stringify(data),
     })
-    .then((response) => response.text())
-    .then((data) => {
-        toast.show();
+    .then((response) => {
+        response.text().then((result) => {
+            console.log(result);
+            toastResult.textContent = result;
+            toast.show();
+        })
     })
     .catch((error) => {
         alert('오류 발생');
@@ -68,17 +67,23 @@ function withdrawal() {
 
     let result = confirm('회원탈퇴를 진행하시겠습니까?');
 
-    if (result == true) {
+    if (result) {
         fetch("/setting/withdrawal", {
                 method: 'DELETE',
+                headers: {
+                    'Accept': 'text/plain'
+                }
             })
-            .then((response) => response.text())
-            .then((data) => {
-                alert('회원탈퇴가 완료되었습니다.')
-                window.location.href = '/';
+            .then((response) => {
+                response.text().then((result) => {
+                    alert(result);
+                })
+                if (response.ok) {
+                    window.location.href = '/';
+                }
             })
             .catch((error) => {
-                alert('오류');
+                alert('Client Error');
             })
     }
 }

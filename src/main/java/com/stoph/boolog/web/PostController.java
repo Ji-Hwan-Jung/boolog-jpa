@@ -13,6 +13,8 @@ import com.stoph.boolog.web.dto.PostUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -128,8 +130,9 @@ public class PostController {
 
     @ResponseBody
     @PostMapping("/post/write")
-    public String addPost(@ModelAttribute PostRequestDto post, @LoginMember SessionMember member) {
-        return postService.write(member.getEmail(), post).toString();
+    public ResponseEntity<String> writeProc(@ModelAttribute PostRequestDto post, @LoginMember SessionMember member) {
+        Long savedId = postService.write(member.getEmail(), post);
+        return new ResponseEntity<>(savedId.toString(), HttpStatus.OK);
     }
 
     @GetMapping("/post/{id}/edit")
@@ -148,7 +151,7 @@ public class PostController {
 
     @ResponseBody
     @PutMapping("/post/{id}/edit")
-    public String edit(@ModelAttribute PostUpdateDto post,
+    public ResponseEntity<String> edit(@ModelAttribute PostUpdateDto post,
                        @PathVariable Long id,
                        @LoginMember SessionMember member) {
 
@@ -159,12 +162,12 @@ public class PostController {
             postService.modify(id, post);
         }
 
-        return id.toString();
+        return new ResponseEntity<>(id.toString(), HttpStatus.OK);
     }
 
     @ResponseBody
     @DeleteMapping("/post/{id}/delete")
-    public String delete(@PathVariable Long id, @LoginMember SessionMember member) {
+    public ResponseEntity<String> delete(@PathVariable Long id, @LoginMember SessionMember member) {
 
         String author = postService.findById(id).toResponseDto().getAuthor();
 
@@ -172,7 +175,7 @@ public class PostController {
             postService.delete(id);
         }
 
-        return "success";
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/post/liked")
@@ -195,31 +198,31 @@ public class PostController {
 
     @ResponseBody
     @PostMapping("/post/{id}/thumb-up")
-    public String thumbUp(@PathVariable Long id,
+    public ResponseEntity<String> thumbUp(@PathVariable Long id,
                           @LoginMember SessionMember member) {
 
         if (member != null) {
             postService.addLikedPost(member.getEmail(), id);
             Post findPost = postService.findById(id);
 
-            return findPost.getLiked().toString();
+            return new ResponseEntity<>(findPost.getLiked().toString(), HttpStatus.OK);
         } else {
-            return "error";  //클라이언트에서 error 처리를 하도록 (차후 바꿀 예정)
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
     @ResponseBody
     @DeleteMapping("/post/{id}/thumb-up-cancel")
-    public String thumbUpCancel(@PathVariable Long id,
+    public ResponseEntity<String> thumbUpCancel(@PathVariable Long id,
                                 @LoginMember SessionMember member) {
 
         if (member != null) {
             postService.removeLikedPost(member.getEmail(), id);
             Post findPost = postService.findById(id);
 
-            return findPost.getLiked().toString();
+            return new ResponseEntity<>(findPost.getLiked().toString(), HttpStatus.OK);
         } else {
-            return "error";  //클라이언트에서 error 처리를 하도록 (차후 바꿀 예정)
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -12,6 +12,8 @@ import com.stoph.boolog.web.dto.TagResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,21 +63,23 @@ public class MemberController {
 
     @ResponseBody
     @PatchMapping("/setting/update")
-    public String profileUpdate(@RequestBody MemberUpdateDto updateParam, @SessionAttribute(name = "member") SessionMember sessionMember) {
+    public ResponseEntity<String> profileUpdate(@RequestBody MemberUpdateDto updateParam, @SessionAttribute(name = "member") SessionMember sessionMember) {
         Long memberId = memberService.findByEmail(sessionMember.getEmail()).getId();
         memberService.update(memberId, updateParam);
         sessionMember.updateSession(memberService.findById(memberId));
 
-        return "success";
+        return new ResponseEntity<>("회원 정보가 수정되었습니다.", HttpStatus.OK);
     }
 
     @ResponseBody
     @DeleteMapping("/setting/withdrawal")
-    public String withdrawal(@LoginMember SessionMember sessionMember) {
+    public ResponseEntity<String> withdrawal(@LoginMember SessionMember sessionMember) {
         Long memberId = memberService.findByEmail(sessionMember.getEmail()).getId();
         memberService.delete(memberId);
         httpSession.invalidate();
 
-        return "ok";
+        return new ResponseEntity<>("회원 탈퇴가 완료되었습니다.", HttpStatus.OK);
     }
+
+
 }
