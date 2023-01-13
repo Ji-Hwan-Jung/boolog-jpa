@@ -6,7 +6,17 @@
 - 기본적인 기능과 디자인은 [velog.io](https://velog.io/)를 참고했습니다.
 - 학습한 것들을 실제 프로젝트에 녹이는 것을 목표로 하는 프로젝트이므로 수시로 기능을 추가하거나 리팩토링 할 예정입니다.
 <br>
- 
+
+## 데모 - [Boolog](http://www.boolog.kro.kr)
+- 무료 서비스를 주로 사용하고 있어서 성능이 좋지 않아 전체적으로 로드 속도가 다소 느립니다.
+
+
+- 테스트 계정
+  - Email : test@test.com
+  - Passwrod : test
+
+<br>
+
 ## 기존 프로젝트에서의 변동 사항
 - Entity를 중심으로 DB 테이블 구조 재설계
 - MyBatis 기반에서 JPA 기반으로 전환
@@ -45,14 +55,6 @@
 
 ## 사용한 외부 라이브러리
 - 글 작성 에디터 - [toast ui editor](https://ui.toast.com/tui-editor)
-
-<br>
-
-## 데모 - [Boolog](http://www.boolog.kro.kr)
-- 무료 서비스를 주로 사용하고 있어서 성능이 좋지 않아 전체적으로 로드 속도가 다소 느립니다.
-  - 배포환경 - [Google Compute Engine](https://cloud.google.com/compute?hl=ko)
-  - 세션 관리 - [redis.com](https://redis.com/)
-  - 데이터베이스 - [db4free.net](https://www.db4free.net/)
 
 <br>
 
