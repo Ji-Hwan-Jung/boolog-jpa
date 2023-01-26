@@ -18,17 +18,24 @@ function updateName() {
     fetch("/setting/update", {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept' : 'application/json'
         },
         body: JSON.stringify(data),
     })
     .then((response) => {
-        response.text().then((result) => {
-            console.log(result);
-            toastResult.textContent = result;
-            document.querySelector('#profile').setAttribute('href', '/@' + this.username.value);
-            toast.show()
-        })
+        if (response.ok) {
+            response.text().then((result) => {
+                toastResult.textContent = result;
+                document.querySelector('#profile').setAttribute('href', '/@' + this.username.value);
+                toast.show()
+            });
+        } else {
+            response.json().then((result) => {
+                toastResult.textContent = result.message;
+                toast.show();
+            })
+        }
     })
     .catch((error) => {
         alert('오류 발생');
@@ -46,21 +53,28 @@ function updateIntro() {
     fetch("/setting/update", {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept' : 'application/json'
         },
         body: JSON.stringify(data),
     })
-    .then((response) => {
-        response.text().then((result) => {
-            console.log(result);
-            toastResult.textContent = result;
-            toast.show();
+        .then((response) => {
+            if (response.ok) {
+                response.text().then((result) => {
+                    toastResult.textContent = result;
+                    toast.show();
+                });
+            } else {
+                response.json().then((result) => {
+                    toastResult.textContent = result.message;
+                    toast.show();
+                });
+            }
         })
-    })
-    .catch((error) => {
-        alert('오류 발생');
-        window.location.href = '/setting';
-    });
+        .catch((error) => {
+            alert('오류 발생');
+            window.location.href = '/setting';
+        });
 }
 
 function withdrawal() {
@@ -71,15 +85,16 @@ function withdrawal() {
         fetch("/setting/withdrawal", {
                 method: 'DELETE',
                 headers: {
-                    'Accept': 'text/plain'
+                    'Accept': 'application/json'
                 }
             })
             .then((response) => {
-                response.text().then((result) => {
-                    alert(result);
-                })
                 if (response.ok) {
                     window.location.href = '/';
+                } else {
+                    response.json().then((result) => {
+                        alert(result.message);
+                    });
                 }
             })
             .catch((error) => {

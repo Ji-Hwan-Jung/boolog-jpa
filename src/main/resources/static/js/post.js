@@ -11,7 +11,7 @@ const closeModal = document.querySelector('#closeModal');
 
 closeModal.addEventListener('click', deleteThumbnail);
 
-thumbnailUpload.addEventListener('change', function() {
+thumbnailUpload.addEventListener('change', function () {
     thumbnail.src = URL.createObjectURL(thumbnailUpload.files[0]);
 });
 
@@ -22,7 +22,9 @@ function deleteThumbnail() {
 
 // 게시글 저장
 function savePost() {
-    const tags_string = (tags.value.length > 0) ? JSON.parse(tags.value).map((e) => {return e.value.toLowerCase();}).join(',') : '';
+    const tags_string = (tags.value.length > 0) ? JSON.parse(tags.value).map((e) => {
+        return e.value.toLowerCase();
+    }).join(',') : '';
 
     if (editor.isMarkdownMode()) {
         content = editor.getMarkdown();
@@ -51,27 +53,32 @@ function savePost() {
 
     fetch("/post/write", {
         method: 'POST',
-        body: formData
-        })
+        body: formData,
+        headers: {
+            'Accept' : 'application/json'
+        }
+    })
         .then((response => {
-            response.text().then((result) => {
-                if (response.ok) {
+            if (response.ok) {
+                response.text().then((result) => {
                     window.location.href = `/post/${result}`;
-                } else {
-                    const data = JSON.parse(result);
-//                    alert(result.message);
-                    alert('비정상적인 접근입니다.');
-                }
-            })
+                });
+            } else {
+                response.json().then((result) => {
+                    alert(result.message);
+                });
+            }
         }))
         .catch((error) => {
             console.error('실패', error);
-    });
+        });
 }
 
 // 게시글 수정
 function updatePost(post_id) {
-    const tags_string = (tags.value.length > 0) ? JSON.parse(tags.value).map((e) => {return e.value.toLowerCase();}).join(',') : '';
+    const tags_string = (tags.value.length > 0) ? JSON.parse(tags.value).map((e) => {
+        return e.value.toLowerCase();
+    }).join(',') : '';
 
     if (editor.isMarkdownMode()) {
         content = editor.getMarkdown();
@@ -99,22 +106,25 @@ function updatePost(post_id) {
 
     fetch("/post/" + post_id + "/edit", {
         method: 'PUT',
-        body: formData
-        })
+        body: formData,
+        headers: {
+            'Accept' : 'application/json'
+        }
+    })
         .then((response) => {
-            response.text().then((result) => {
-                if (response.ok) {
+            if (response.ok) {
+                response.text().then((result) => {
                     window.location.href = `/post/${result}`;
-                } else {
-                    const data = JSON.parse(result);
-//                    alert(result.message);
-                    alert('비정상적인 접근입니다.');
-                }
-            })
+                });
+            } else {
+                response.json().then((result) => {
+                    alert(result.message);
+                });
+            }
         })
         .catch((error) => {
             console.error('실패', error);
-    });
+        });
 }
 
 // 게시글 삭제
@@ -124,21 +134,23 @@ function deletePost(post_id) {
 
     if (result) {
         fetch("/post/" + post_id + "/delete", {
-            method: 'DELETE'
-        })
-        .then((response) => {
-            if (response.ok){
-                window.location.href = "/";
-            } else {
-                response.json().then((result) => {
-                    alert('비정상적인 접근입니다.');
-//                    alert(result.message);
-                });
+            method: 'DELETE',
+            headers: {
+                'Accept' : 'application/json'
             }
         })
-        .catch((error) => {
-            console.error('실패', error);
-        });
+            .then((response) => {
+                if (response.ok) {
+                    window.location.href = "/";
+                } else {
+                    response.json().then((result) => {
+                        alert(result.message);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error('실패', error);
+            });
     }
 }
 
@@ -149,59 +161,55 @@ function thumbUpProc(post_id, is_liked) {
     const likedStatus = document.querySelector('#likedStatus');
 
     if (is_liked) {
-        fetch("/post/" + post_id + "/thumb-up-cancel",{
+        fetch("/post/" + post_id + "/thumb-up-cancel", {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json'
             }
         })
-        .then((response) => {
-            response.text().then((result) => {
+            .then((response) => {
                 if (response.ok) {
-                    likedStatus.classList.replace('btn-success', 'btn-outline-success');
-                    likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`);
-                    likedCnt.textContent = result;
+                    response.text().then((result) => {
+                        likedStatus.classList.replace('btn-success', 'btn-outline-success');
+                        likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`);
+                        likedCnt.textContent = result;
+                    });
                 } else {
-//                    const data = JSON.parse(result);
-//                    alert(data.message);
-                    alert('로그인 후 이용해주세요.');
-                    window.location.href = "/signin";
+                    response.json().then((result) => {
+                        alert(result.message);
+                    });
                 }
             })
-        })
-        .catch((error) => {
-            alert('Client Error');
-        })
-    }
-
-    else {
+            .catch((error) => {
+                alert('Client Error');
+            })
+    } else {
         fetch("/post/" + post_id + "/thumb-up", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
             }
         })
-        .then((response) => {
-            response.text().then((result) => {
+            .then((response) => {
                 if (response.ok) {
-                    likedStatus.classList.replace('btn-outline-success', 'btn-success');
-                    likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`);
-                    likedCnt.textContent = result;
+                    response.text().then((result) => {
+                        likedStatus.classList.replace('btn-outline-success', 'btn-success');
+                        likedStatus.setAttribute('onclick', `thumbUpProc(${post_id}, ${!is_liked})`);
+                        likedCnt.textContent = result;
+                    });
                 } else {
-//                    const data = JSON.parse(result);
-//                    alert(data.message);
-                    alert('로그인 후 이용해주세요.');
-                    window.location.href = "/signin";
+                    response.json().then((result) => {
+                        alert(result.message);
+                    })
                 }
             })
-        })
-        .catch((error) => {
-            alert('Client Error');
-        })
+            .catch((error) => {
+                alert('Client Error');
+            })
     }
 }
 
-function publish(mode, desc='') {
+function publish(mode, desc = '') {
     const description = document.querySelector('#description');
     const content = editor.isMarkdownMode() ? editor.getMarkdown() : editor.getHTML();
 
