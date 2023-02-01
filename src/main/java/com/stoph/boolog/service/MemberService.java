@@ -2,6 +2,7 @@ package com.stoph.boolog.service;
 
 import com.stoph.boolog.domain.member.Member;
 import com.stoph.boolog.domain.member.repository.MemberRepository;
+import com.stoph.boolog.exception.NoSuchMemberException;
 import com.stoph.boolog.web.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,23 +28,23 @@ public class MemberService {
 
     public Member findById(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
     }
 
     public Member findByName(String name) {
         return memberRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
     }
 
     public Member findByEmail(String email) {
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
     }
 
     @Transactional
     public void delete(Long id) {
         Member findMember = memberRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
         memberRepository.delete(findMember);
     }
 }

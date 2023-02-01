@@ -6,6 +6,8 @@ import com.stoph.boolog.domain.post.LikedPost;
 import com.stoph.boolog.domain.post.Period;
 import com.stoph.boolog.domain.post.Post;
 import com.stoph.boolog.domain.post.repository.PostRepository;
+import com.stoph.boolog.exception.NoSuchMemberException;
+import com.stoph.boolog.exception.NoSuchPostException;
 import com.stoph.boolog.web.dto.PostRequestDto;
 import com.stoph.boolog.web.dto.PostResponseDto;
 import com.stoph.boolog.web.dto.PostUpdateDto;
@@ -34,7 +36,7 @@ public class PostService {
     @Transactional
     public Long write(String email, PostRequestDto requestDto) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
         Post post = requestDto.toPost(member);
         post.addTag(postRepository.tagDuplicateValidation(requestDto.getTagList()));
         postRepository.save(post);
@@ -49,7 +51,7 @@ public class PostService {
 
     public Post findById(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(NoSuchPostException::new);
     }
 
     public List<PostResponseDto> findAll() {
@@ -89,7 +91,7 @@ public class PostService {
 
     public List<PostResponseDto> findAllByMember(String name) {
         Member member = memberRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
         return postRepository.findAllByMember(member.getId())
                 .stream().map(Post::toResponseDto)
                 .collect(Collectors.toList());
@@ -98,7 +100,7 @@ public class PostService {
     public Page<PostResponseDto> findAllByMemberAndTag(String name, String tag, int page) {
         PageRequest pageRequest = PageRequest.of(page - 1, NUMBERS_PER_PAGE);
         Member member = memberRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
         return postRepository.findAllByMemberAndTag(member.getId(), tag, pageRequest)
                 .map(Post::toResponseDto);
     }
@@ -111,9 +113,9 @@ public class PostService {
 
     public boolean isLiked(Long memberId, Long postId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));;
+                .orElseThrow(NoSuchPostException::new);
 
         List<Post> likedPosts = member.getLikedPosts().stream()
                 .map(LikedPost::getPost)
@@ -124,14 +126,14 @@ public class PostService {
 
     public List<TagResponseDto> findNumbersOfTag(String name) {
         Member member = memberRepository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));;
+                .orElseThrow(NoSuchMemberException::new);
         return postRepository.findCountOfTag(member.getId());
     }
 
     @Transactional
     public void addLikedPost(String email, Long postId) {
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
 
         postRepository.addLikedPost(findMember.getId(), postId);
     }
@@ -139,7 +141,7 @@ public class PostService {
     @Transactional
     public void removeLikedPost(String email, Long postId) {
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+                .orElseThrow(NoSuchMemberException::new);
 
         postRepository.removeLikedPost(findMember.getId(), postId);
     }
@@ -147,7 +149,7 @@ public class PostService {
     @Transactional
     public void delete(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+                .orElseThrow(NoSuchPostException::new);
 
         postRepository.delete(post);
     }
