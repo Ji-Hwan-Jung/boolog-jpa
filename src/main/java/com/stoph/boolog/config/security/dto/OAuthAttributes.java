@@ -1,4 +1,4 @@
-package com.stoph.boolog.config.dto;
+package com.stoph.boolog.config.security.dto;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;

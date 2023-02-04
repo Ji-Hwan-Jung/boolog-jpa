@@ -1,4 +1,4 @@
-package com.stoph.boolog.config.dto;
+package com.stoph.boolog.config.security.dto;
 
 import com.stoph.boolog.domain.member.Member;
 import com.stoph.boolog.domain.member.MemberVO;

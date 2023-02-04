@@ -1,7 +1,7 @@
-package com.stoph.boolog.config.oauth;
+package com.stoph.boolog.config.security.oauth;
 
-import com.stoph.boolog.config.dto.OAuthAttributes;
-import com.stoph.boolog.config.dto.SessionMember;
+import com.stoph.boolog.config.security.dto.OAuthAttributes;
+import com.stoph.boolog.config.security.dto.SessionMember;
 import com.stoph.boolog.domain.member.Member;
 import com.stoph.boolog.domain.member.repository.MemberRepository;
 import com.stoph.boolog.domain.member.Role;

@@ -1,4 +1,4 @@
-package com.stoph.boolog.config.auth;
+package com.stoph.boolog.config.security.auth;
 
 import com.stoph.boolog.domain.member.MemberVO;
 import lombok.EqualsAndHashCode;

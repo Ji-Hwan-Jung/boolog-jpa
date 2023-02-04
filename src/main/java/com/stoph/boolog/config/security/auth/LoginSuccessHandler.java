@@ -1,6 +1,6 @@
-package com.stoph.boolog.config.auth;
+package com.stoph.boolog.config.security.auth;
 
-import com.stoph.boolog.config.dto.SessionMember;
+import com.stoph.boolog.config.security.dto.SessionMember;
 import com.stoph.boolog.domain.member.MemberVO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
