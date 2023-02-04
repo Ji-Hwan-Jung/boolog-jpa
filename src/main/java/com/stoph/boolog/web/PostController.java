@@ -1,9 +1,10 @@
 package com.stoph.boolog.web;
 
 import com.stoph.boolog.config.LoginMember;
-import com.stoph.boolog.config.dto.SessionMember;
+import com.stoph.boolog.config.security.dto.SessionMember;
 import com.stoph.boolog.domain.post.Period;
 import com.stoph.boolog.domain.post.Post;
+import com.stoph.boolog.exception.AuthenticationException;
 import com.stoph.boolog.utils.WebUtils;
 import com.stoph.boolog.service.MemberService;
 import com.stoph.boolog.service.PostService;
@@ -42,7 +43,7 @@ public class PostController {
 
     //인기 포스트
     @GetMapping("/post/popular")
-    public String popular(@RequestParam(value = "period", defaultValue = "daily") String period,
+    public String popular(@RequestParam(value = "period", defaultValue = "all") String period,
                           @RequestParam(value = "page", defaultValue = "1") int page,
                           Model model) {
 
@@ -207,7 +208,7 @@ public class PostController {
 
             return new ResponseEntity<>(findPost.getLiked().toString(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new AuthenticationException("로그인 후 이용해주세요.");
         }
     }
 
@@ -222,7 +223,7 @@ public class PostController {
 
             return new ResponseEntity<>(findPost.getLiked().toString(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new AuthenticationException("로그인 후 이용해주세요.");
         }
     }
 

@@ -27,7 +27,7 @@ public class IndexController {
     @GetMapping("/")
     public String main(Model model) {
 
-        List<PostResponseDto> popularList = postService.findAllPopularByPeriod(Period.weekly, 1)
+        List<PostResponseDto> popularList = postService.findAllPopularByPeriod(Period.all, 1)
                 .stream().limit(4L).collect(Collectors.toList());
         List<PostResponseDto> recentList = postService.findAllRecent(1)
                 .stream().limit(4L).collect(Collectors.toList());

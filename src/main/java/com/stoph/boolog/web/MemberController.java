@@ -1,7 +1,7 @@
 package com.stoph.boolog.web;
 
 import com.stoph.boolog.config.LoginMember;
-import com.stoph.boolog.config.dto.SessionMember;
+import com.stoph.boolog.config.security.dto.SessionMember;
 import com.stoph.boolog.utils.WebUtils;
 import com.stoph.boolog.service.MemberService;
 import com.stoph.boolog.service.PostService;

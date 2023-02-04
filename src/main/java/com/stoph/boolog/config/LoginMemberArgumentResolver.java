@@ -1,6 +1,6 @@
 package com.stoph.boolog.config;
 
-import com.stoph.boolog.config.dto.SessionMember;
+import com.stoph.boolog.config.security.dto.SessionMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
