@@ -1,47 +1,70 @@
 # Boolog
->기존에 진행하고 있던 프로젝트([Boolog-MyBatis](https://github.com/Ji-Hwan-Jung/boolog-mybatis))를 JPA로 전환한 프로젝트입니다.<br>
-기존 프로젝트 개발은 무기한 중단하며, 현재 프로젝트를 기본으로 개발할 예정입니다.
-
-- Spring Framwork를 학습하고 배운 내용을 활용하여 만든 토이 프로젝트입니다.
+>기존에 진행하고 있던 프로젝트([Boolog-MyBatis](https://github.com/Ji-Hwan-Jung/boolog-mybatis))를 JPA로 전환한 프로젝트입니다.
+- Spring Framwork를 학습하고 배운 내용을 활용하여 만든 개인 프로젝트입니다.
 - 기본적인 기능과 디자인은 [velog.io](https://velog.io/)를 참고했습니다.
-- 학습한 것들을 실제 프로젝트에 녹이는 것을 목표로 하는 프로젝트이므로 수시로 기능을 추가하거나 리팩토링 할 예정입니다.
+
 <br>
 
 ## 데모 - [Boolog](http://www.boolog.kro.kr)
-- 무료 서비스를 주로 사용하고 있어서 성능이 좋지 않아 전체적으로 로드 속도가 다소 느립니다.
-
-
 - 테스트 계정
   - Email : test@test.com
-  - Passwrod : test
+  - Passwrod : testw
 
 <br>
 
-## 기존 프로젝트에서의 변동 사항
-- Entity를 중심으로 DB 테이블 구조 재설계
-- MyBatis 기반에서 JPA 기반으로 전환
+## 프로젝트 진행 목적
+- 프론트엔드와 백엔드를 모두 혼자서 설계하고 구현하면서 배우는 점이 있을 것이라 기대했습니다.
+- 학습한 내용의 이해를 돕기 위해 프로젝트에 코드를 작성하면서 정리하였습니다.
+
+<br>
+
+## 개발 기간
+- 2022.06 ~ 2022.10
 
 <br>
 
 ## 주요 기능
-- 로그인/회원가입 : 구글, 네이버 OAuth API 사용
-- 게시글 기능
-  - 게시글 검색
-    - 인기순 : 일간, 주간, 월간, 연간별로 검색 가능
-    - 최신순 : 가장 최신에 작성된 게시글 순서대로 검색
-    - 키워드 검색 : 찾고자 하는 키워드가 포함된 게시글 검색
-  - 게시글 작성/수정 : 마크다운 또는 HTML 형식으로 작성 가능한 에디터 제공
-  - 게시글 삭제
-- 댓글 기능 : [라이브리](https://www.livere.com/) 서비스 사용
-- 좋아요 기능 : 좋아요한 게시글을 따로 모아서 검색 가능
-- 태그 기능 : 태그별로 게시글을 따로 모아서 검색 가능
-  
+### 로그인 및 회원가입
+![login-Signin](https://user-images.githubusercontent.com/96276840/225645443-3af992b2-655d-4600-b19b-c8c177b3163d.png)
+- 이메일 인증 관련 기능 및 로직이 아직 미구현되어 있어 현재, 일반 회원가입은 불가능합니다.
+- 구글, 네이버 OAuth 로그인을 지원 하고 있습니다.
+
+### 게시글 관련
+#### 인기순 조회
+![popular](https://user-images.githubusercontent.com/96276840/225658505-a980b42f-7225-43c3-804b-af3a3e5873d5.png)
+- 좋아요 수가 많은 순서대로, 좋아요 수가 같다면 작성일을 기준으로 내림차순하여 정렬합니다.
+- 일간, 주간, 월간, 연간으로 기간을 설정하여 조회할 수 있습니다.
+
+#### 최신순 조회
+![recent](https://user-images.githubusercontent.com/96276840/225659254-e758076e-bd68-4dc7-adcb-a7681683ebf6.png)
+- 가장 최근에 작성된 순으로 내림차순 정렬합니다.
+
+#### 키워드 조회
+![keyword](https://user-images.githubusercontent.com/96276840/225661280-3aae99ff-0a55-48f2-8084-7564738e067b.png)
+- 찾고자 하는 키워드가 포함된 게시글을 검색하고 작성일을 기준으로 내림차순하여 정렬합니다.
+- 글제목, 글내용, 글소개, 유저이름에 키워드가 포함되어 있는지 확인합니다.
+
+#### 좋아요한 글 조회
+![liked](https://user-images.githubusercontent.com/96276840/225664062-1187d997-64fc-4b04-9fdb-5149288df986.png)
+- 좋아요를 누른 게시글을 조회할 수 있습니다.
+- 좋아요를 누른 날짜와 시간을 기준으로 내림차순하여 정렬합니다.
+
+#### 작성 및 수정
+![write](https://user-images.githubusercontent.com/96276840/225662377-f40a4535-ff20-4376-866e-a64e4a16c365.png)
+![publish](https://user-images.githubusercontent.com/96276840/225662660-72a0d912-bad8-45fe-92b1-5a808efab469.png)
+- 마크다운 또는 HTML 형식으로 작성 가능하도록 외부 라이브러리를 사용했습니다.
+- 썸네일 관련 기능은 현재 미구현입니다.
+
+### 회원 정보 관리
+![user](https://user-images.githubusercontent.com/96276840/225666405-8f36f2f8-748b-453a-81ed-d77d2d39b16c.png)
+- 프로필 이미지 관련 기능은 현재 미구현입니다.
+
 <br>
 
-## 기술 스택
+## 사용한 기술
 - Frontend : HTML/CSS, Javascript, Bootstrap, Thymeleaf
-- Backend : Java11, Spring Boot, Spring MVC, Spring Security, Spring Session, Spring Data JPA
-- DevOps : Gradle, MySQL, Redis, Google Compute Engine
+- Backend : Java, Spring Boot, Spring Security, Spring Data JPA
+- DevOps : MySQL, Google Compute Engine
 - Tools : IntelliJ IDEA, VScode
 
 <br>
@@ -50,6 +73,7 @@
 - [기능 명세서](https://stophase.notion.site/641b6f9b214f4c89ad7f0d53ff5470a4)
 - [API 설계](https://stophase.notion.site/API-4f26a39fce3349d7919e84e773bef83a)
 - [DB 스키마](https://www.erdcloud.com/d/g7m9tyvTkhDAhJcwt)
+- [디자인](https://ovenapp.io/view/ikRK1RPN6QbQdhMsl0va1UunRsdUZTj7/WqeHi)
 
 <br>
 
@@ -58,18 +82,14 @@
 
 <br>
 
-## 앞으로 추가 및 수정할 기능
+## 앞으로 추가할 기능
 - **일반 로그인 및 회원가입**
   - 이메일 인증을 통해 유효하지 않은 이메일로 회원가입 방지
-- **댓글 기능**
-  - 라이브리 서비스에 의존하지 않고 자체적으로 댓글 기능 구현
 - **이미지 업로드**
-  - 썸네일 및 게시글 내 이미지 삽입 관련 로직 구현
+  - 썸네일, 프로필, 게시글 내 이미지 삽입 관련 로직 구현
 - **구독 기능**
   - 자주 방문하는 회원 구독하는 기능
   - 구독한 회원별로 게시글 모아볼 수 있는 조회 API 추가
-- **알림 기능**
-  - 구독한 회원의 새로운 글 등록, 나의 게시글에 달린 댓글 등등의 소식을 알려주는 기능
 
 <br>
 
