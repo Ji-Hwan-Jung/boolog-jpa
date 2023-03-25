@@ -8,7 +8,7 @@
 ## 데모 - [Boolog](http://www.boolog.kro.kr)
 - 테스트 계정
   - Email : test@test.com
-  - Passwrod : testw
+  - Passwrod : test
 
 <br>
 
@@ -20,6 +20,43 @@
 
 ## 개발 기간
 - 2022.06 ~ 2022.10
+
+<br>
+
+## 기획 및 설계
+### API 명세
+**게시글 (Post)**
+|No|Method|URL|설명|
+|--|------|---|--|
+|1|`GET`|/post/{id}|게시글 단건 조회|
+|2|`GET`|/post/popular|인기글 조회|
+|3|`GET`|/post/recent|최신글 조회|
+|4|`GET`|/tags/{tag}|태그별 조회|
+|5|`GET`|/post/search?keyword=___|검색어 조회|
+|6|`GET`|/post/liked|좋아요한 글 조회|
+|7|`POST`|/post/write|게시글 등록|
+|8|`PUT`|/post/{id}|게시글 수정|
+|9|`DELETE`|/post/{id}|게시글 삭제|
+|10|`POST`|/liked/{id}|게시글 좋아요|
+|11|`DELETE`|/liked/{id}|게시글 좋아요 취소|
+
+**회원 (User)**
+|No|Method|URL|설명|
+|------|---|---|---|
+|1|`GET`|/@{name}|내 정보|
+|2|`GET`|/setting|회원 정보 관리|
+|3|`PATCH`|/setting|정보 수정|
+|4|`DELETE`|/setting|회원 탈퇴|
+|5|`GET`|/logout|로그아웃|
+|6|`GET`|/signin|권한 없음(가입 안내 페이지)|
+
+<br>
+
+### ERD
+![erd](https://user-images.githubusercontent.com/96276840/227703717-640eb16c-fc8f-4ce4-b956-8075391fbe89.jpg)
+
+### 디자인
+- https://ovenapp.io/view/ikRK1RPN6QbQdhMsl0va1UunRsdUZTj7/WqeHi
 
 <br>
 
@@ -62,23 +99,16 @@
 <br>
 
 ## 사용한 기술
-- Frontend : HTML/CSS, Javascript, Bootstrap, Thymeleaf
-- Backend : Java, Spring Boot, Spring Security, Spring Data JPA
+- Frontend : HTML/CSS, Javascript, Bootstrap
+- Backend : Java, Spring, Thymeleaf, Spring Security, Spring Data JPA
 - DevOps : MySQL, Google Compute Engine
 - Tools : IntelliJ IDEA, VScode
 
 <br>
 
-## 기획 및 설계
-- [기능 명세서](https://stophase.notion.site/641b6f9b214f4c89ad7f0d53ff5470a4)
-- [API 설계](https://stophase.notion.site/API-4f26a39fce3349d7919e84e773bef83a)
-- [DB 스키마](https://www.erdcloud.com/d/g7m9tyvTkhDAhJcwt)
-- [디자인](https://ovenapp.io/view/ikRK1RPN6QbQdhMsl0va1UunRsdUZTj7/WqeHi)
-
-<br>
-
 ## 사용한 외부 라이브러리
 - 글 작성 에디터 - [toast ui editor](https://ui.toast.com/tui-editor)
+- 태그 라이브러리 - [tagify](https://github.com/yairEO/tagify)
 
 <br>
 
@@ -90,10 +120,3 @@
 - **구독 기능**
   - 자주 방문하는 회원 구독하는 기능
   - 구독한 회원별로 게시글 모아볼 수 있는 조회 API 추가
-
-<br>
-
-## 학습한 강의 및 도서
-- [우아한형제들 최연소 기술이사 김영한의 스프링 완전 정복](https://www.inflearn.com/roadmaps/373)
-- [스프링부트 시큐리티 & JWT 강의](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0)
-- [스프링 부트와 AWS로 혼자 구현하는 웹 서비스](http://www.yes24.com/Product/Goods/83849117)
