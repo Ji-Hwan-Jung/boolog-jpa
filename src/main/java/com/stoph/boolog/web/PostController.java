@@ -130,7 +130,7 @@ public class PostController {
     }
 
     @ResponseBody
-    @PostMapping("/post/write")
+    @PostMapping("/post")
     public ResponseEntity<String> writeProc(@ModelAttribute PostRequestDto post, @LoginMember SessionMember member) {
         Long savedId = postService.write(member.getEmail(), post);
         return new ResponseEntity<>(savedId.toString(), HttpStatus.OK);

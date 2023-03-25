@@ -34,7 +34,7 @@
 |4|`GET`|/tags/{tag}|태그별 조회|
 |5|`GET`|/post/search?keyword=___|검색어 조회|
 |6|`GET`|/post/liked|좋아요한 글 조회|
-|7|`POST`|/post/write|게시글 등록|
+|7|`POST`|/post|게시글 등록|
 |8|`PUT`|/post/{id}|게시글 수정|
 |9|`DELETE`|/post/{id}|게시글 삭제|
 |10|`POST`|/liked/{id}|게시글 좋아요|

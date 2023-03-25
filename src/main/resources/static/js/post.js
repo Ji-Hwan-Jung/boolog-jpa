@@ -51,7 +51,7 @@ function savePost() {
     formData.append('content', content.trim());
     formData.append('tags', tags_string);
 
-    fetch("/post/write", {
+    fetch("/post", {
         method: 'POST',
         body: formData,
         headers: {
