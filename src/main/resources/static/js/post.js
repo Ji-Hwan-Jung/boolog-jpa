@@ -104,7 +104,7 @@ function updatePost(post_id) {
     formData.append('content', content.trim());
     formData.append('tags', tags_string);
 
-    fetch("/post/" + post_id + "/edit", {
+    fetch("/post/" + post_id, {
         method: 'PUT',
         body: formData,
         headers: {
@@ -133,7 +133,7 @@ function deletePost(post_id) {
     const result = confirm('게시글을 삭제하시겠습니까?');
 
     if (result) {
-        fetch("/post/" + post_id + "/delete", {
+        fetch("/post/" + post_id, {
             method: 'DELETE',
             headers: {
                 'Accept' : 'application/json'
@@ -159,9 +159,10 @@ function thumbUpProc(post_id, is_liked) {
 
     const likedCnt = document.querySelector('#likedCnt');
     const likedStatus = document.querySelector('#likedStatus');
+    const url = "/liked/" + post_id;
 
     if (is_liked) {
-        fetch("/post/" + post_id + "/thumb-up-cancel", {
+        fetch(url, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json'
@@ -184,7 +185,7 @@ function thumbUpProc(post_id, is_liked) {
                 alert('Client Error');
             })
     } else {
-        fetch("/post/" + post_id + "/thumb-up", {
+        fetch(url, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'

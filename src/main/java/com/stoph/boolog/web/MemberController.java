@@ -2,6 +2,8 @@ package com.stoph.boolog.web;
 
 import com.stoph.boolog.config.LoginMember;
 import com.stoph.boolog.config.security.dto.SessionMember;
+import com.stoph.boolog.domain.member.Member;
+import com.stoph.boolog.exception.ExistNameException;
 import com.stoph.boolog.utils.WebUtils;
 import com.stoph.boolog.service.MemberService;
 import com.stoph.boolog.service.PostService;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @CrossOrigin(origins = "http://chiye1890.dothome.co.kr", methods = RequestMethod.GET)
@@ -62,8 +65,12 @@ public class MemberController {
     }
 
     @ResponseBody
-    @PatchMapping("/setting/update")
+    @PatchMapping("/setting")
     public ResponseEntity<String> profileUpdate(@RequestBody MemberUpdateDto updateParam, @SessionAttribute(name = "member") SessionMember sessionMember) {
+        if (memberService.isExists(updateParam.getName())) {
+            throw new ExistNameException();
+        }
+
         Long memberId = memberService.findByEmail(sessionMember.getEmail()).getId();
         memberService.update(memberId, updateParam);
         sessionMember.updateSession(memberService.findById(memberId));
@@ -72,7 +79,7 @@ public class MemberController {
     }
 
     @ResponseBody
-    @DeleteMapping("/setting/withdrawal")
+    @DeleteMapping("/setting")
     public ResponseEntity<String> withdrawal(@LoginMember SessionMember sessionMember) {
         Long memberId = memberService.findByEmail(sessionMember.getEmail()).getId();
         memberService.delete(memberId);
@@ -80,6 +87,4 @@ public class MemberController {
 
         return new ResponseEntity<>("회원 탈퇴가 완료되었습니다.", HttpStatus.OK);
     }
-
-
 }

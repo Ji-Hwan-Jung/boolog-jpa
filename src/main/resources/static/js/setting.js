@@ -15,7 +15,7 @@ function updateName() {
         name: this.username.value
     }
 
-    fetch("/setting/update", {
+    fetch("/setting", {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ function updateIntro() {
         introduction: introduction.value
     }
 
-    fetch("/setting/update", {
+    fetch("/setting", {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ function withdrawal() {
     let result = confirm('회원탈퇴를 진행하시겠습니까?');
 
     if (result) {
-        fetch("/setting/withdrawal", {
+        fetch("/setting", {
                 method: 'DELETE',
                 headers: {
                     'Accept': 'application/json'

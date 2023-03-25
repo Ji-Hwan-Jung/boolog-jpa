@@ -151,7 +151,7 @@ public class PostController {
     }
 
     @ResponseBody
-    @PutMapping("/post/{id}/edit")
+    @PutMapping("/post/{id}")
     public ResponseEntity<String> edit(@ModelAttribute PostUpdateDto post,
                        @PathVariable Long id,
                        @LoginMember SessionMember member) {
@@ -167,7 +167,7 @@ public class PostController {
     }
 
     @ResponseBody
-    @DeleteMapping("/post/{id}/delete")
+    @DeleteMapping("/post/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id, @LoginMember SessionMember member) {
 
         String author = postService.findById(id).toResponseDto().getAuthor();
@@ -198,8 +198,8 @@ public class PostController {
     }
 
     @ResponseBody
-    @PostMapping("/post/{id}/thumb-up")
-    public ResponseEntity<String> thumbUp(@PathVariable Long id,
+    @PostMapping("/liked/{id}")
+    public ResponseEntity<String> likeUp(@PathVariable Long id,
                           @LoginMember SessionMember member) {
 
         if (member != null) {
@@ -213,8 +213,8 @@ public class PostController {
     }
 
     @ResponseBody
-    @DeleteMapping("/post/{id}/thumb-up-cancel")
-    public ResponseEntity<String> thumbUpCancel(@PathVariable Long id,
+    @DeleteMapping("/liked/{id}")
+    public ResponseEntity<String> likeUpCancel(@PathVariable Long id,
                                 @LoginMember SessionMember member) {
 
         if (member != null) {
