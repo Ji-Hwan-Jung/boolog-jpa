@@ -122,7 +122,7 @@
       </div>
     </div>
     <div th:if="${postList.getTotalPages() > 0}" class="row mt-5">
-      <nav aria-label="Page navigation">
+      <nav>
         <ul
                 class="pagination justify-content-center"
                 style="
@@ -136,16 +136,26 @@
             "
         >
           <li class="page-item">
-            <a class="page-link" th:href="@{|/@${member.name}?page=1|}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
+            <a class="page-link" th:href="@{|/@${member.name}?page=1|}">
+              <span>&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{|/@${member.name}?page=${(currentPage - 1 > 1)? currentPage - 1:1}|}">
+              <span>&lsaquo;</span>
             </a>
           </li>
           <li th:each="page : ${pageList}" class="page-item" th:classappend="(${currentPage} == ${page})? 'active':''">
             <a class="page-link" th:href="@{|/@${member.name}?page=${page}|}" th:text="${page}"></a>
           </li>
           <li class="page-item">
-            <a class="page-link" th:href="@{|/@${member.name}?page=${postList.getTotalPages()}|}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
+            <a class="page-link" th:href="@{|/@${member.name}?page=${(currentPage + 1 < postList.getTotalPages())? currentPage + 1:postList.getTotalPages()}|}">
+              <span>&rsaquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{|/@${member.name}?page=${postList.getTotalPages()}|}">
+              <span>&raquo;</span>
             </a>
           </li>
         </ul>

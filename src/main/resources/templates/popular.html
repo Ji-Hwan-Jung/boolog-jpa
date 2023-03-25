@@ -22,7 +22,6 @@
               class="btn btn-secondary dropdown-toggle"
               id="periodPopularDropdown"
               data-bs-toggle="dropdown"
-              aria-expanded="false"
               style="
                 --bs-btn-padding-y: 0.2rem;
                 --bs-btn-padding-x: 0.5rem;
@@ -105,7 +104,7 @@
     </div>
 
   <div>
-    <nav aria-label="Page navigation example">
+    <nav>
       <ul
               class="pagination justify-content-center"
               style="
@@ -119,16 +118,26 @@
             "
       >
         <li class="page-item">
-          <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=1|}" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
+          <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=1|}">
+            <span>&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=${(currentPage - 1 > 1)? currentPage - 1:1}|}">
+            <span>&lsaquo;</span>
           </a>
         </li>
         <li th:each="page : ${pageList}" class="page-item" th:classappend="(${currentPage} == ${page})? 'active':''">
           <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=${page}|}" th:text="${page}"></a>
         </li>
         <li class="page-item">
-          <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=${popularList.getTotalPages()}|}" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
+          <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=${(currentPage + 1 < popularList.getTotalPages())? currentPage + 1:popularList.getTotalPages()}|}">
+            <span>&rsaquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" th:href="@{|/post/popular?period=${periodKey}&page=${popularList.getTotalPages()}|}">
+            <span>&raquo;</span>
           </a>
         </li>
       </ul>

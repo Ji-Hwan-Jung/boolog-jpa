@@ -55,7 +55,7 @@
     </div>
 
     <div>
-      <nav aria-label="Page navigation example">
+      <nav>
         <ul
                 class="pagination justify-content-center"
                 style="
@@ -69,16 +69,26 @@
             "
         >
           <li class="page-item">
-            <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=1|}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
+            <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=1|}">
+              <span>&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=${(currentPage - 1 > 1)? currentPage - 1:1}|}">
+              <span>&lsaquo;</span>
             </a>
           </li>
           <li th:each="page : ${pageList}" class="page-item" th:classappend="(${currentPage} == ${page})? 'active':''">
             <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=${page}|}" th:text="${page}"></a>
           </li>
           <li class="page-item">
-            <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=${result.getTotalPages()}|}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
+            <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=${(currentPage + 1 < result.getTotalPages())? currentPage + 1:result.getTotalPages()}|}">
+              <span>&rsaquo;</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" th:href="@{|/post/search?q=${keyword}&page=${result.getTotalPages()}|}">
+              <span>&raquo;</span>
             </a>
           </li>
         </ul>
