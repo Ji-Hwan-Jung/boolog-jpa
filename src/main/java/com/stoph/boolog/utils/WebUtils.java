@@ -26,9 +26,8 @@ public class WebUtils {
     }
 
     public static List<Integer> getPageIndexes(int page, int total) {
-
-        int startPage = (INDEXES_PER_PAGE * ((page / INDEXES_PER_PAGE) + 1)) - (INDEXES_PER_PAGE - 1);
-        int endPage = Math.min(INDEXES_PER_PAGE * ((page / INDEXES_PER_PAGE) + 1), total);
+        int startPage = INDEXES_PER_PAGE * (int) Math.ceil((double) page/INDEXES_PER_PAGE) - INDEXES_PER_PAGE + 1;
+        int endPage = Math.min(startPage + INDEXES_PER_PAGE - 1, total);
 
         List<Integer> pageList = new ArrayList<>();
         for(int i = startPage; i <= endPage; i++) {
