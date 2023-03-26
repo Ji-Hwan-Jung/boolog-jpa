@@ -14,7 +14,7 @@
 
 ## 프로젝트 진행 목적
 - 프론트엔드와 백엔드를 모두 혼자서 설계하고 구현하면서 배우는 점이 있을 것이라 기대했습니다.
-- 학습한 내용의 이해를 돕기 위해 프로젝트에 코드를 작성하면서 정리하였습니다.
+- 학습한 내용의 이해를 돕기 위해 프로젝트에 코드를 작성하면서 정리했습니다.
 
 <br>
 
@@ -54,9 +54,89 @@
 
 ### ERD
 ![erd](https://user-images.githubusercontent.com/96276840/227703717-640eb16c-fc8f-4ce4-b956-8075391fbe89.jpg)
+- 각각의 게시글이 가지고 있는 태그는 post 테이블에 담지 않고 별도의 테이블로 분리했습니다.
+- post와 tag는 다대다 관계이므로, 이를 post_tag 테이블로 표현했습니다.
+
+<br>
 
 ### 디자인
 - https://ovenapp.io/view/ikRK1RPN6QbQdhMsl0va1UunRsdUZTj7/WqeHi
+
+<br>
+
+### 패키지 구조
+```
+📦boolog
+ ┣ 📂config
+ ┃ ┣ 📂security
+ ┃ ┃ ┣ 📂auth
+ ┃ ┃ ┃ ┣ 📜LoginSuccessHandler.java
+ ┃ ┃ ┃ ┣ 📜PrincipalDetails.java
+ ┃ ┃ ┃ ┗ 📜PrincipalDetailsService.java
+ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┣ 📜OAuthAttributes.java
+ ┃ ┃ ┃ ┗ 📜SessionMember.java
+ ┃ ┃ ┣ 📂oauth
+ ┃ ┃ ┃ ┗ 📜CustomOAuth2UserService.java
+ ┃ ┃ ┣ 📜CustomAccessDeniedHandler.java
+ ┃ ┃ ┣ 📜CustomAuthenticationEntryPoint.java
+ ┃ ┃ ┗ 📜SecurityConfig.java
+ ┃ ┣ 📜AppConfig.java
+ ┃ ┣ 📜LoginMember.java
+ ┃ ┣ 📜LoginMemberArgumentResolver.java
+ ┃ ┗ 📜WebConfig.java
+ ┣ 📂domain
+ ┃ ┣ 📂member
+ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┣ 📜MemberRepository.java
+ ┃ ┃ ┃ ┣ 📜MemberRepositoryCustom.java
+ ┃ ┃ ┃ ┗ 📜MemberRepositoryImpl.java
+ ┃ ┃ ┣ 📜Member.java
+ ┃ ┃ ┣ 📜MemberVO.java
+ ┃ ┃ ┗ 📜Role.java
+ ┃ ┗ 📂post
+ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┣ 📜PostRepository.java
+ ┃ ┃ ┃ ┣ 📜PostRepositoryCustom.java
+ ┃ ┃ ┃ ┗ 📜PostRepositoryImpl.java
+ ┃ ┃ ┣ 📜LikedPost.java
+ ┃ ┃ ┣ 📜Period.java
+ ┃ ┃ ┣ 📜Post.java
+ ┃ ┃ ┣ 📜PostTag.java
+ ┃ ┃ ┗ 📜Tag.java
+ ┣ 📂exception
+ ┃ ┣ 📂response
+ ┃ ┃ ┣ 📜ErrorResponse.java
+ ┃ ┃ ┗ 📜ExceptionController.java
+ ┃ ┣ 📜AuthenticationException.java
+ ┃ ┣ 📜AuthorizationException.java
+ ┃ ┣ 📜BoologException.java
+ ┃ ┣ 📜ExistNameException.java
+ ┃ ┣ 📜NoSuchMemberException.java
+ ┃ ┗ 📜NoSuchPostException.java
+ ┣ 📂service
+ ┃ ┣ 📜MemberService.java
+ ┃ ┗ 📜PostService.java
+ ┣ 📂trigger
+ ┃ ┣ 📜LikedMinus.java
+ ┃ ┗ 📜LikedPlus.java
+ ┣ 📂utils
+ ┃ ┣ 📜AppUtils.java
+ ┃ ┗ 📜WebUtils.java
+ ┣ 📂web
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜MemberResponseDto.java
+ ┃ ┃ ┣ 📜MemberUpdateDto.java
+ ┃ ┃ ┣ 📜PostRequestDto.java
+ ┃ ┃ ┣ 📜PostResponseDto.java
+ ┃ ┃ ┣ 📜PostUpdateDto.java
+ ┃ ┃ ┗ 📜TagResponseDto.java
+ ┃ ┣ 📜IndexController.java
+ ┃ ┣ 📜MemberController.java
+ ┃ ┗ 📜PostController.java
+ ┣ 📜BoologApplication.java
+ ┗ 📜TestDataInit.java
+```
 
 <br>
 
@@ -64,7 +144,7 @@
 ### 로그인 및 회원가입
 ![login-Signin](https://user-images.githubusercontent.com/96276840/225645443-3af992b2-655d-4600-b19b-c8c177b3163d.png)
 - 이메일 인증 관련 기능 및 로직이 아직 미구현되어 있어 현재, 일반 회원가입은 불가능합니다.
-- 구글, 네이버 OAuth 로그인을 지원 하고 있습니다.
+- 구글, 네이버 OAuth 로그인을 지원합니다.
 
 ### 게시글 관련
 #### 인기순 조회
@@ -109,6 +189,12 @@
 ## 사용한 외부 라이브러리
 - 글 작성 에디터 - [toast ui editor](https://ui.toast.com/tui-editor)
 - 태그 라이브러리 - [tagify](https://github.com/yairEO/tagify)
+
+<br>
+
+## 개발 기록
+- 개발하면서 고민했던 점, 개선했던 점 등을 기록합니다.
+  - https://stophase.notion.site/9d20799eb2274d7f8b49cab208010295
 
 <br>
 
